@@ -2,7 +2,7 @@ function displayMessage(msg) {
   console.log(msg);
 }
 
-var Perezoso = (function() {
+var PEREZOSO = (function() {
   var tasksTimed = [],
       tasksInfinite = [],
       isRunning = false,
@@ -28,12 +28,12 @@ var Perezoso = (function() {
       this.init();
     },
     update: function() {
-      Perezoso.findTime();  
-      Perezoso.cleanList();
+      PEREZOSO.findTime();  
+      PEREZOSO.cleanList();
     },
     init: function(){
       if(intervalID === null) {
-        intervalID = window.setInterval(this.update, 100);
+        intervalID = window.setInterval(this.update, 10);
         isRunning = true;
       }
     },
@@ -84,11 +84,11 @@ var Perezoso = (function() {
        }
     }
   }
-})();
+}(PEREZOSO || {}));
 
 /*
-Perezoso.addTimed(2000, (function(){ document.write("You win!! <br>")}));
-Perezoso.add(2500, (function(){ document.write("You win again!! <br>")}));
-Perezoso.add(3500, displayMessage, "I <3 JS");
-Perezoso.addInfinite(3500, (function(){ document.write("Infinite! <br>")}));
+PEREZOSO.addTimed(2000, (function(){ document.write("You win!! <br>")}));
+PEREZOSO.add(2500, (function(){ document.write("You win again!! <br>")}));
+PEREZOSO.add(3500, displayMessage, "I <3 JS");
+PEREZOSO.addInfinite(3500, (function(){ document.write("Infinite! <br>")}));
 */
