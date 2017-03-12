@@ -1,7 +1,8 @@
 # Perezoso 1.0
-========
 
 For they lazy Javascript programmers among us, here's PEREZOSO!
+
+PEREZOSO will wait and run a task (function) when you want.
 
 There are two main wait to run a task; timed and infinite.
 
