@@ -146,8 +146,28 @@ gulp.task('wiredep', () => {
     .pipe(gulp.dest('app'));
 });
 
-gulp.task('build', ['lint', 'html', 'images', 'fonts', 'extras'], () => {
-  return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
+gulp.task('dist_supporting_files', ['clean',], () => {
+  return gulp.src([
+    'README.md'
+  ], {
+    dot: true
+  }).pipe(gulp.dest('dist'));
+})
+
+
+gulp.task('dist_scripts', ['dist_supporting_files'], () => {
+  return gulp.src('app/scripts/lib/**/*.js')
+    .pipe($.plumber())
+    //.pipe($.sourcemaps.init())
+    .pipe($.babel())
+    //.pipe($.sourcemaps.write('.'))
+    .pipe($.size({title: 'build', gzip: true}))
+    .pipe(gulp.dest('dist/js'))
+    .pipe(reload({stream: true}))
+});
+
+gulp.task('build', ['dist_scripts'], () => {
+  return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}))
 });
 
 gulp.task('default', ['clean'], () => {
