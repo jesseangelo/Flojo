@@ -16,9 +16,9 @@ PEREZOSO.addInfinite(timeInMS, function())
 ## Some examples
 ### addTimed(timeInMS, function)
 ```
-PEREZOSO.addTimed(2000, (function(){
+PEREZOSO.addTimed(2000, function(){
     document.write("You win!!")
-}));
+});
 ```
 ### addTimed(timeInMS, function, parameter)
 You can also reference a function and pass a parameter
@@ -32,7 +32,7 @@ PEREZOSO.addTimed(3500, displayMessage, "I <3 JS");
 
 ### addInfinite(timeInMS, function, parameter)
 ```
-PEREZOSO.addInfinite(3500, (function(){
+PEREZOSO.addInfinite(3500, function(){
     document.write("Infinite")
-}));
+});
 ```
