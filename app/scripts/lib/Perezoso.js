@@ -37,37 +37,35 @@ var PEREZOSO = (function() {
     },
     findTime: function()
     {
+      var d = new Date();
+      var myT = d.getTime();
+
       if(tasksTimed.length)
-      {
-        for(var q = 0; q < tasksTimed.length; q++)
-        {
-          var d = new Date();
-          var myT = d.getTime();
-          var myW = tasksTimed[q].when;
+      {        
+        tasksTimed.forEach(function(task, index) {
+          var myW = task.when;
 
           if((myW-myT) < 0)
           {
-            tasksTimed[q].func(tasksTimed[q].param);
-            tasksTimed[q] = null;
+            task.func(task.param);
+            tasksTimed[index] = null;
           }
-        }
+        });      
       }
+      
       if(tasksInfinite.length)
       {
-        for(var q = 0; q < tasksInfinite.length; q++)
-        {
-          var d = new Date();
-          var myT = d.getTime();
-          var myW = tasksInfinite[q].when;
+        tasksInfinite.forEach(function(task, index) {
+          var myW = task.when;
 
           if((myW-myT) < 0)
           {
-            tasksInfinite[q].func(tasksInfinite[q].param);
-            var newT = myT + tasksInfinite[q].interval;
+            task.func(task.param);
+            var newT = myT + task.interval;
             //if(_debug) console.log(newT);
-            tasksInfinite[q].when = d.getTime() + tasksInfinite[q].interval;
+            task.when = d.getTime() + task.interval;
           }
-        }
+        });
       }
     },
     cleanList: function() {
