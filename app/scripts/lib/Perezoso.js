@@ -81,8 +81,7 @@ var PEREZOSO = (function() {
       var myW = t + w;
       tasksInfinite.push({interval: w, when: myW, func: f, param: p });
       if(_debug) console.log("added Infinite: " + w + " f: " + f);
-      this.init();
+      init();
     }
-    
   }
 }(PEREZOSO || {}));
