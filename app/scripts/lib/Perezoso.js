@@ -1,4 +1,5 @@
 var PEREZOSO = (function() {
+  
   //Private
   var tasksTimed = [],
       tasksInfinite = [],
@@ -60,7 +61,6 @@ var PEREZOSO = (function() {
          }
       }
     
-
   //Public
   return {
     add: function(w, f, p) {
