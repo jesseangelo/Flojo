@@ -1,5 +1,5 @@
 var PEREZOSO = (function() {
-  
+
   //Private
   var tasksTimed = [],
       tasksInfinite = [],
@@ -15,39 +15,32 @@ var PEREZOSO = (function() {
       update = function() {
         findTime();
         cleanList();
-      },    
+      },
       findTime = function()
       {
         var d = new Date();
         var myT = d.getTime();
 
-        if(tasksTimed.length)
-        {        
-          tasksTimed.forEach(function(task, index) {
-            var myW = task.when;
+        tasksTimed.forEach(function(task, index) {
+          var myW = task.when;
+          if((myW-myT) < 0)
+          {
+            task.func(task.param);
+            tasksTimed[index] = null;
+          }
+        });
 
-            if((myW-myT) < 0)
-            {
-              task.func(task.param);
-              tasksTimed[index] = null;
-            }
-          });      
-        }
+        tasksInfinite.forEach(function(task, index) {
+          var myW = task.when;
+          if((myW-myT) < 0)
+          {
+            task.func(task.param);
+            var newT = myT + task.interval;
+            //if(_debug) console.log(newT);
+            task.when = d.getTime() + task.interval;
+          }
+        });
 
-        if(tasksInfinite.length)
-        {
-          tasksInfinite.forEach(function(task, index) {
-            var myW = task.when;
-
-            if((myW-myT) < 0)
-            {
-              task.func(task.param);
-              var newT = myT + task.interval;
-              //if(_debug) console.log(newT);
-              task.when = d.getTime() + task.interval;
-            }
-          });
-        }
       },
       cleanList = function() {
         var newArray = [];
@@ -60,7 +53,7 @@ var PEREZOSO = (function() {
             intervalID = null;
          }
       }
-    
+
   //Public
   return {
     add: function(w, f, p) {
