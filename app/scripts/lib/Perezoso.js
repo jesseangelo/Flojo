@@ -19,6 +19,10 @@ var PEREZOSO = (function() {
       update = function() {
         findTime();
         cleanList();
+        if(tasksTimed.length == 0 && tasksInfinite.length == 0) {
+          clearInterval(intervalID);
+          intervalID = null;
+        }
       },
       findTime = function() {
         var d = new Date();
@@ -47,14 +51,33 @@ var PEREZOSO = (function() {
       },
       cleanList = function() {
         var newArray = [];
-         for(var q = 0; q < tasksTimed.length; q++) {
-            if(tasksTimed[q] != null) { newArray.push(tasksTimed[q]); }
-         }
-         tasksTimed = newArray;
-         if(newArray.length == 0 && tasksInfinite.length == 0) {
-            clearInterval(intervalID);
-            intervalID = null;
-         }
+        for(var q = 0; q < tasksTimed.length; q++) {
+          if(tasksTimed[q] != null) { newArray.push(tasksTimed[q]); }
+        }
+        tasksTimed = newArray;
+
+        var newIArray = [];
+        for(var q = 0; q < tasksInfinite.length; q++) {
+          if(tasksInfinite[q] != null) { newIArray.push(tasksInfinite[q]); }
+        }
+        tasksInfinite = newIArray;
+      },
+      kill = function(id) {
+        tasksTimed.forEach(function(task, index) {
+          var myId = task.id;
+          if(myId == id)
+          {
+            tasksTimed[index] = null;
+          }
+        });
+        tasksInfinite.forEach(function(task, index) {
+          var myId = task.id;
+          if(myId == id)
+          {
+            tasksInfinite[index] = null;
+          }
+        });
+        cleanList();
       }
 
   //Public
@@ -63,22 +86,28 @@ var PEREZOSO = (function() {
       var d = new Date();
       var t = d.getTime();
       var myW = t + w;
-      tasksTimed.push({start: t, when: myW, func: f, param: p });
+      var myId = getNewTaskId();
+      tasksTimed.push({id: myId, start: t, when: myW, func: f, param: p });
       if(_debug) console.log("added: " + w + " f: " + f);
       init();
-      return getNewTaskId();
+      return myId;
     },
     addInfinite: function(w, f, p) {
       var d = new Date();
       var t = d.getTime();
       var myW = t + w;
-      tasksInfinite.push({interval: w, when: myW, func: f, param: p });
+      var myId = getNewTaskId();
+      tasksInfinite.push({id: myId, interval: w, when: myW, func: f, param: p });
       if(_debug) console.log("added Infinite: " + w + " f: " + f);
       init();
-      return getNewTaskId();
+      return myId;
     },
     addCounted: function() {
       throw "Not Implemented"
+    },
+    removeTask: function (id) {
+      if(_debug) console.log("Killing task " + id)
+      kill(id);
     }
   }
 }(PEREZOSO || {}));
