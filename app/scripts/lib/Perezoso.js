@@ -16,8 +16,7 @@ var PEREZOSO = (function() {
         findTime();
         cleanList();
       },
-      findTime = function()
-      {
+      findTime = function() {
         var d = new Date();
         var myT = d.getTime();
 
