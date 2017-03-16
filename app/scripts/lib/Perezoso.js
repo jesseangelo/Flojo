@@ -3,9 +3,13 @@ var PEREZOSO = (function() {
   //Private
   var tasksTimed = [],
       tasksInfinite = [],
+      currentTaskId = 0,
       isRunning = false,
       intervalID = null,
       _debug = false,
+      getNewTaskId = function() {
+        return currentTaskId++;
+      },
       init = function() {
         if(intervalID === null) {
           intervalID = window.setInterval(update, 10);
@@ -62,6 +66,7 @@ var PEREZOSO = (function() {
       tasksTimed.push({start: t, when: myW, func: f, param: p });
       if(_debug) console.log("added: " + w + " f: " + f);
       init();
+      return getNewTaskId();
     },
     addInfinite: function(w, f, p) {
       var d = new Date();
@@ -70,6 +75,10 @@ var PEREZOSO = (function() {
       tasksInfinite.push({interval: w, when: myW, func: f, param: p });
       if(_debug) console.log("added Infinite: " + w + " f: " + f);
       init();
+      return getNewTaskId();
+    },
+    addCounted: function() {
+      throw "Not Implemented"
     }
   }
 }(PEREZOSO || {}));
