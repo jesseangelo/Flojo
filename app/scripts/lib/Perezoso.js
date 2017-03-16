@@ -56,10 +56,6 @@ var PEREZOSO = (function() {
 
   //Public
   return {
-    add: function(w, f, p) {
-      this.addTimed(w, f, p);
-      return "hello";
-    },
     addTimed: function(w, f, p) {
       var d = new Date();
       var t = d.getTime();
