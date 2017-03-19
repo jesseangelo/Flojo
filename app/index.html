@@ -17,10 +17,19 @@
     <!-- build:css styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
-
+    <style>
+      #box {
+        height: 5em;
+        width: 5em;
+        border: 2px solid;
+        transition: all .4s ease;
+      }
+    </style>
   </head>
   <body>
     PEREZOSO
+
+    <div id="box"></div>
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
     <!-- endbower -->
@@ -30,5 +39,22 @@
     <script src="scripts/lib/Perezoso.js"></script>
     <script src="scripts/main.js"></script>
     <!-- endbuild -->
+    <script>/*
+    PEREZOSO.addInfinite(1500, function() {
+      var h = Math.floor(Math.random() * 36) + 10;
+      var w = Math.floor(Math.random() * 30) + 10;
+      var b = Math.floor(Math.random() * 5) + 1;
+      console.log("h: " + h + " w: " + w)
+      var elm = document.getElementById("box");
+      //elm.style.width = w + "em";
+      //elm.style.height = h + "em";
+      //elm.style.border = b + "px solid";
+    });*/
+
+    PEREZOSO.addCounted(2000, 5, function(){
+      console.log("counting")
+    })
+
+    </script>
   </body>
 </html>
