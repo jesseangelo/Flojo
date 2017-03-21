@@ -52,9 +52,27 @@
     });*/
 
     PEREZOSO.addCounted(2000, 5, function(){
-      console.log("counting")
-    })
+      console.log("counting");
+    });
 
+    var P = {
+      id: 2,
+      testMe: function(w){
+        console.log('test added ' + w)
+        this.init()
+        return this;
+      },
+      thenMe: function(w){
+        console.log('then added ' + w)
+        return this;
+      },
+      init: function() {
+        return this.id;
+      }
+    }
+
+    var k = P.testMe(200).thenMe(300).thenMe(400);
+    console.log(k)
     </script>
   </body>
 </html>

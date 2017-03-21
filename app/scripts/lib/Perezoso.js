@@ -127,7 +127,12 @@ var PEREZOSO = (function() {
       tasksTimed.push({id: myId, start: t, when: myW, func: f, param: p });
       if(_debug) console.log("added: " + w + " f: " + f);
       init();
-      return myId;
+      //return myId;
+      return this;
+    },
+    then: function() {
+      console.log('then added')
+      return this;
     },
     addInfinite: function(w, f, p) {
       var d = new Date();
