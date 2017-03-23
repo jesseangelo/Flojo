@@ -51,23 +51,33 @@
       //elm.style.border = b + "px solid";
     });*/
 
-    PEREZOSO.addTimed(1000, function() {
+
+    var k1 = PEREZOSO.addTimed(1000, function() {
       console.log("timed")
     }).then( 2000, function() {
       console.log("then");
-    })
+    }).then( 1000, function() {
+      console.log("then done")
+    });
 
+    var k2 = new PEREZOSO.addTimed(1000, function() {
+      console.log("new")
+    });
+
+
+/*
     PEREZOSO.addCounted(2000, 5, function(){
-      //console.log("counting");
+      console.log("counting");
     });
-    /*
-    var k = PEREZOSO.addInfinite(1000, function() {
-      //console.log("inf");
-    });
-    PEREZOSO.addTimed(3000, function() {
-      PEREZOSO.removeTask(k.id)
-    });
-    */
+*/
+    // var k = PEREZOSO.addInfinite(1000, function() {
+    //   console.log("inf");
+    // });
+    //
+    // PEREZOSO.addTimed(3000, function() {
+    //   PEREZOSO.removeTask(k.id)
+    // });
+
 
     </script>
   </body>

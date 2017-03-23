@@ -9,7 +9,7 @@ var PEREZOSO = (function() {
       intervalID = null,
       _debug = false,
       getNewTaskId = function() {
-        return currentTaskId++;
+        return ++currentTaskId;
       },
       init = function() {
         if(intervalID === null) {
@@ -92,26 +92,30 @@ var PEREZOSO = (function() {
         }
         tasksInfinite = newIArray;
       },
-      kill = function(id) {
+      kill = function(taskToKill) {
         tasksTimed.forEach(function(task, index) {
-          var myId = task.id;
-          if(myId == id)
-          {
-            tasksTimed[index] = null;
+          if(task != null) {
+            var myId = task.id;
+            if(myId == taskToKill.id)
+            {
+              tasksTimed[index] = null;
+            }
           }
         });
         tasksCounted.forEach(function(task, index) {
           var myId = task.id;
-          if(myId == id)
+          if(myId == taskToKill.id)
           {
             tasksCounted[index] = null;
           }
         });
         tasksInfinite.forEach(function(task, index) {
-          var myId = task.id;
-          if(myId == id)
-          {
-            tasksInfinite[index] = null;
+          if(task != null) {
+            var myId = task.id;
+            if(myId == taskToKill.id)
+            {
+              tasksInfinite[index] = null;
+            }
           }
         });
         cleanList();
@@ -142,7 +146,7 @@ var PEREZOSO = (function() {
       return this;
     },
     then: function(w, f, p) {
-      this.addTimed(w, f, p, this.id);
+      this.addTimed(w, f, p, currentTaskId);
       return this;
     },
     addInfinite: function(w, f, p) {
@@ -153,7 +157,7 @@ var PEREZOSO = (function() {
       tasksInfinite.push({id: myId, interval: w, when: myW, func: f, param: p });
       if(_debug) console.log("added Infinite: " + w + " f: " + f);
       init();
-      this.id = myId;
+      //this.id = myId;
       return this;
     },
     addCounted: function(w, c, f, p) {
@@ -167,9 +171,9 @@ var PEREZOSO = (function() {
       init();
       return myId;
     },
-    removeTask: function (id) {
+    removeTask: function (task) {
       if(_debug) console.log("Killing task " + id)
-      kill(id);
+      kill(task);
     }
     //random number generator?
   }
