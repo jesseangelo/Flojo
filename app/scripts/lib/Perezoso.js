@@ -115,23 +115,34 @@ var PEREZOSO = (function() {
           }
         });
         cleanList();
+      },
+      getTaskFromId = function(id) {
+        return tasksTimed.find(function(t) {
+          return t.id == id;
+        });
       }
 
   //Public
   return {
-    addTimed: function(w, f, p) {
+    id: "",
+    addTimed: function(w, f, p, _r) {
       var d = new Date();
       var t = d.getTime();
-      var myW = t + w;
+      var myW;
+      if(_r != undefined) {
+        myW = getTaskFromId(_r).id + w;
+      } else {
+        myW = t + w;
+      }
       var myId = getNewTaskId();
       tasksTimed.push({id: myId, start: t, when: myW, func: f, param: p });
       if(_debug) console.log("added: " + w + " f: " + f);
       init();
-      //return myId;
+      this.id = myId;
       return this;
     },
-    then: function() {
-      console.log('then added')
+    then: function(w, f, p) {
+      this.addTimed(w, f, p, this.id);
       return this;
     },
     addInfinite: function(w, f, p) {
@@ -142,11 +153,11 @@ var PEREZOSO = (function() {
       tasksInfinite.push({id: myId, interval: w, when: myW, func: f, param: p });
       if(_debug) console.log("added Infinite: " + w + " f: " + f);
       init();
-      return myId;
+      this.id = myId;
+      return this;
     },
     addCounted: function(w, c, f, p) {
       //error checking for values
-      //throw "Not Implemented"
       var d = new Date();
       var t = d.getTime();
       var myW = t + w;
