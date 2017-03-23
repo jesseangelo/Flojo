@@ -130,7 +130,7 @@ var PEREZOSO = (function() {
       var t = d.getTime();
       var myW;
       if(_r != undefined) {
-        myW = getTaskFromId(_r).id + w;
+        myW = getTaskFromId(_r).when + w;
       } else {
         myW = t + w;
       }

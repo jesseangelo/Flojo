@@ -53,19 +53,21 @@
 
     PEREZOSO.addTimed(1000, function() {
       console.log("timed")
-    }).then( 200, function() {
+    }).then( 2000, function() {
       console.log("then");
     })
 
     PEREZOSO.addCounted(2000, 5, function(){
       //console.log("counting");
     });
+    /*
     var k = PEREZOSO.addInfinite(1000, function() {
       //console.log("inf");
     });
     PEREZOSO.addTimed(3000, function() {
       PEREZOSO.removeTask(k.id)
     });
+    */
 
     </script>
   </body>
