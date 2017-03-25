@@ -53,18 +53,25 @@
 
 
     var k1 = PEREZOSO.addTimed(1000, function() {
-      console.log("timed")
+      console.log("then")
     }).then( 2000, function() {
-      console.log("then");
+      console.log("cannot be killed");
     }).then( 1000, function() {
       console.log("then done")
     });
 
-    var k2 = new PEREZOSO.addTimed(1000, function() {
-      console.log("new")
+
+    var k3 = PEREZOSO.addTimeBeta(6000, function() {
+      console.log("after")
+    });
+    //console.log("id is: " + k3)
+    var anything = PEREZOSO.after(k3, 1000, function() {
+      console.log("...can be killed")
     });
 
+    PEREZOSO.removeTask(anything);
 
+    //console.log("anything? : " + anything)
 /*
     PEREZOSO.addCounted(2000, 5, function(){
       console.log("counting");

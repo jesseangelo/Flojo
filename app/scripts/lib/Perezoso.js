@@ -7,7 +7,7 @@ var PEREZOSO = (function() {
       currentTaskId = 0,
       isRunning = false,
       intervalID = null,
-      _debug = false,
+      _debug = true,
       getNewTaskId = function() {
         return ++currentTaskId;
       },
@@ -92,32 +92,42 @@ var PEREZOSO = (function() {
         }
         tasksInfinite = newIArray;
       },
-      kill = function(taskToKill) {
+      kill = function(id) {
         tasksTimed.forEach(function(task, index) {
           if(task != null) {
             var myId = task.id;
-            if(myId == taskToKill.id)
+            if(myId == id)
             {
               tasksTimed[index] = null;
+              if(_debug) { console.log('task killed: ' + id) }
             }
           }
         });
-        tasksCounted.forEach(function(task, index) {
-          var myId = task.id;
-          if(myId == taskToKill.id)
-          {
-            tasksCounted[index] = null;
-          }
-        });
-        tasksInfinite.forEach(function(task, index) {
-          if(task != null) {
-            var myId = task.id;
-            if(myId == taskToKill.id)
-            {
-              tasksInfinite[index] = null;
-            }
-          }
-        });
+        // tasksTimed.forEach(function(task, index) {
+        //   if(task != null) {
+        //     var myId = task.id;
+        //     if(myId == taskToKill.id)
+        //     {
+        //       tasksTimed[index] = null;
+        //     }
+        //   }
+        // });
+        // tasksCounted.forEach(function(task, index) {
+        //   var myId = task.id;
+        //   if(myId == taskToKill.id)
+        //   {
+        //     tasksCounted[index] = null;
+        //   }
+        // });
+        // tasksInfinite.forEach(function(task, index) {
+        //   if(task != null) {
+        //     var myId = task.id;
+        //     if(myId == taskToKill.id)
+        //     {
+        //       tasksInfinite[index] = null;
+        //     }
+        //   }
+        // });
         cleanList();
       },
       getTaskFromId = function(id) {
@@ -128,7 +138,27 @@ var PEREZOSO = (function() {
 
   //Public
   return {
-    id: "",
+    addTimeBeta: function(when, myFunc, myParam) {
+      var date = new Date(),
+          time = date.getTime(),
+          myWhen = time + when,
+          myId = getNewTaskId();
+
+      tasksTimed.push({id: myId, start: time, when: myWhen, func: myFunc, param: myParam });
+      //console.log(nextFunc)
+      init();
+      return myId;
+    },
+    after: function(id, when, myFunc, myParam) {
+      console.log(id)
+      var date = new Date(),
+          time = date.getTime(),
+          myWhen = mywhen = getTaskFromId(id).when + when,
+          myId = getNewTaskId();
+
+      tasksTimed.push({id: myId, start: time, when: myWhen, func: myFunc, param: myParam });
+      return myId;
+    },
     addTimed: function(w, f, p, _r) {
       var d = new Date();
       var t = d.getTime();
@@ -142,7 +172,7 @@ var PEREZOSO = (function() {
       tasksTimed.push({id: myId, start: t, when: myW, func: f, param: p });
       if(_debug) console.log("added: " + w + " f: " + f);
       init();
-      this.id = myId;
+      //this.id = myId;
       return this;
     },
     then: function(w, f, p) {
@@ -171,10 +201,11 @@ var PEREZOSO = (function() {
       init();
       return myId;
     },
-    removeTask: function (task) {
+    removeTask: function (id) {
       if(_debug) console.log("Killing task " + id)
-      kill(task);
+      kill(id);
     }
-    //random number generator?
+    //random number generator
+    //wait or watch
   }
 }(PEREZOSO || {}));
