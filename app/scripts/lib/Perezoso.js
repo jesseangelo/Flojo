@@ -172,6 +172,7 @@ var PEREZOSO = (function() {
       tasksTimed.push({id: myId, start: t, when: myW, func: f, param: p });
       if(_debug) console.log("added: " + w + " f: " + f);
       init();
+      console.log(myId);
       //this.id = myId;
       return this;
     },
@@ -207,5 +208,23 @@ var PEREZOSO = (function() {
     }
     //random number generator
     //wait or watch
+    //get time since and smooth animatnion
+    //shouldn't just run at 10ms
+    //type of task (use for throwing errors)
+    //animate selector
+    //	return (typeof(_doc) === "undefined") ? e : (_doc.querySelectorAll ? _doc.querySelectorAll(e) : _doc.getElementById((e.charAt(0) === "#") ? e.substr(1) : e));
+    //request animatino frame
+
+    //add class, other jquery-ish function
+    //provide interface for css anims
+
+    //then then then == timeline?
+
+    //https://14islands.com/blog/2015/03/13/transitioning-to-web-animations-from-greensock-gsap/?
+
+    // TweenLite.to = function(target, duration, vars) {
+		// 	return new TweenLite(target, duration, vars);
+		// };
+
   }
 }(PEREZOSO || {}));

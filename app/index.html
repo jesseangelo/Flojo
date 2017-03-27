@@ -51,14 +51,14 @@
       //elm.style.border = b + "px solid";
     });*/
 
-
-    var k1 = PEREZOSO.addTimed(1000, function() {
-      console.log("then")
-    }).then( 2000, function() {
-      console.log("cannot be killed");
-    }).then( 1000, function() {
-      console.log("then done")
-    });
+    // type is chainable
+    // var k1 = PEREZOSO.addTimed(1000, function() {
+    //   console.log("then")
+    // }).then( 2000, function() {
+    //   console.log("cannot be killed");
+    // }).then( 1000, function() {
+    //   console.log("then done")
+    // });
 
 
     var k3 = PEREZOSO.addTimeBeta(6000, function() {
@@ -72,6 +72,22 @@
     PEREZOSO.removeTask(anything);
 
     //console.log("anything? : " + anything)
+
+    // new doesn't exactly work
+    // var k4 = new PEREZOSO.addTimed(1000, function() {
+    //   console.log("new 1")
+    // })
+    //
+    // PEREZOSO.q = 1;
+    //
+    // var k5 = new PEREZOSO.addTimed(2000, function() {
+    //   console.log("new 2")
+    // })
+    //
+    // console.log("4: " + k4)
+    // console.log("5: " + k5)
+
+
 /*
     PEREZOSO.addCounted(2000, 5, function(){
       console.log("counting");
