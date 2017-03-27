@@ -1,4 +1,4 @@
-var PEREZOSO = (function() {
+var P = (function() {
 
   //Private
   var tasksTimed = [],
@@ -138,17 +138,18 @@ var PEREZOSO = (function() {
 
   //Public
   return {
-    addTimeBeta: function(when, myFunc, myParam) {
-      var date = new Date(),
-          time = date.getTime(),
-          myWhen = time + when,
-          myId = getNewTaskId();
 
-      tasksTimed.push({id: myId, start: time, when: myWhen, func: myFunc, param: myParam });
-      //console.log(nextFunc)
+    timed: function(w, f, p) {
+      var d = new Date();
+      var t = d.getTime();
+      var myW = t + w;
+      var myId = getNewTaskId();
+      tasksTimed.push({id: myId, start: t, when: myW, func: f, param: p });
+      if(_debug) console.log("added: " + w + " f: " + f);
       init();
       return myId;
     },
+
     after: function(id, when, myFunc, myParam) {
       console.log(id)
       var date = new Date(),
@@ -159,28 +160,12 @@ var PEREZOSO = (function() {
       tasksTimed.push({id: myId, start: time, when: myWhen, func: myFunc, param: myParam });
       return myId;
     },
-    addTimed: function(w, f, p, _r) {
-      var d = new Date();
-      var t = d.getTime();
-      var myW;
-      if(_r != undefined) {
-        myW = getTaskFromId(_r).when + w;
-      } else {
-        myW = t + w;
-      }
-      var myId = getNewTaskId();
-      tasksTimed.push({id: myId, start: t, when: myW, func: f, param: p });
-      if(_debug) console.log("added: " + w + " f: " + f);
-      init();
-      console.log(myId);
-      //this.id = myId;
-      return this;
-    },
-    then: function(w, f, p) {
-      this.addTimed(w, f, p, currentTaskId);
-      return this;
-    },
-    addInfinite: function(w, f, p) {
+
+    // then: function(w, f, p) {
+    //   this.timed(w, f, p, currentTaskId);
+    //   return this;
+    // },
+    infinite: function(w, f, p) {
       var d = new Date();
       var t = d.getTime();
       var myW = t + w;
@@ -191,7 +176,7 @@ var PEREZOSO = (function() {
       //this.id = myId;
       return this;
     },
-    addCounted: function(w, c, f, p) {
+    counted: function(w, c, f, p) {
       //error checking for values
       var d = new Date();
       var t = d.getTime();
@@ -202,12 +187,11 @@ var PEREZOSO = (function() {
       init();
       return myId;
     },
-    removeTask: function (id) {
+    remove: function (id) {
       if(_debug) console.log("Killing task " + id)
       kill(id);
     }
-    //random number generator
-    //wait or watch
+
     //get time since and smooth animatnion
     //shouldn't just run at 10ms
     //type of task (use for throwing errors)
@@ -218,13 +202,36 @@ var PEREZOSO = (function() {
     //add class, other jquery-ish function
     //provide interface for css anims
 
-    //then then then == timeline?
-
     //https://14islands.com/blog/2015/03/13/transitioning-to-web-animations-from-greensock-gsap/?
 
     // TweenLite.to = function(target, duration, vars) {
 		// 	return new TweenLite(target, duration, vars);
 		// };
 
+    // //simple 'timed' task
+    // P.timed()
+    //
+    // //infinite
+    // P.infinite
+    //
+    // //Counted
+    // P.counted()
+    //
+    // P.remove()
+    // P.pause()
+    // P.stop()
+    // P.reverse()
+    //
+    // var mySeq = P.sequence() //timeline?
+    // mySeq.then().then().then()
+    //
+    // P.watch().until()
+    //
+    //
+    // //utils
+    // random number
+    // animate
+    // find selector
+    // addClass, removeClass
   }
-}(PEREZOSO || {}));
+}(P || {}));

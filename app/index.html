@@ -24,12 +24,33 @@
         border: 2px solid;
         transition: all .4s ease;
       }
+      .example {
+        width: 20em;
+        height: 10em;
+        border: 2px solid;
+        margin-bottom: 2em;
+      }
     </style>
   </head>
   <body>
-    PEREZOSO
+    P
 
     <div id="box"></div>
+    <br>
+
+    Timed
+    <section class='example'>
+
+    </section>
+
+    <section class='example'>
+
+    </section>
+
+    <section class='example'>
+
+    </section>
+
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
     <!-- endbower -->
@@ -39,8 +60,14 @@
     <script src="scripts/lib/Perezoso.js"></script>
     <script src="scripts/main.js"></script>
     <!-- endbuild -->
-    <script>/*
-    PEREZOSO.addInfinite(1500, function() {
+    <script>
+
+    P.timed(1000, function() {
+      console.log("then")
+    })
+
+    /*
+    P.infinite(1500, function() {
       var h = Math.floor(Math.random() * 36) + 10;
       var w = Math.floor(Math.random() * 30) + 10;
       var b = Math.floor(Math.random() * 5) + 1;
@@ -51,56 +78,17 @@
       //elm.style.border = b + "px solid";
     });*/
 
-    // type is chainable
-    // var k1 = PEREZOSO.addTimed(1000, function() {
-    //   console.log("then")
-    // }).then( 2000, function() {
-    //   console.log("cannot be killed");
-    // }).then( 1000, function() {
-    //   console.log("then done")
-    // });
-
-
-    var k3 = PEREZOSO.addTimeBeta(6000, function() {
+    var k3 = P.timed(6000, function() {
       console.log("after")
     });
     //console.log("id is: " + k3)
-    var anything = PEREZOSO.after(k3, 1000, function() {
+    var anything = P.after(k3, 1000, function() {
       console.log("...can be killed")
     });
 
-    PEREZOSO.removeTask(anything);
+    P.remove(anything);
 
     //console.log("anything? : " + anything)
-
-    // new doesn't exactly work
-    // var k4 = new PEREZOSO.addTimed(1000, function() {
-    //   console.log("new 1")
-    // })
-    //
-    // PEREZOSO.q = 1;
-    //
-    // var k5 = new PEREZOSO.addTimed(2000, function() {
-    //   console.log("new 2")
-    // })
-    //
-    // console.log("4: " + k4)
-    // console.log("5: " + k5)
-
-
-/*
-    PEREZOSO.addCounted(2000, 5, function(){
-      console.log("counting");
-    });
-*/
-    // var k = PEREZOSO.addInfinite(1000, function() {
-    //   console.log("inf");
-    // });
-    //
-    // PEREZOSO.addTimed(3000, function() {
-    //   PEREZOSO.removeTask(k.id)
-    // });
-
 
     </script>
   </body>
