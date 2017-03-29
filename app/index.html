@@ -17,10 +17,47 @@
     <!-- build:css styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
-
+    <style>
+      #box {
+        height: 5em;
+        width: 5em;
+        border: 2px solid;
+        transition: all .4s ease;
+      }
+      .example {
+        width: 20em;
+        height: 10em;
+        border: 2px solid;
+        margin-bottom: 2em;
+      }
+    </style>
   </head>
   <body>
-    PEREZOSO
+    P
+
+    <div id="box"></div>
+    <br>
+
+    Timed
+    <section class='example'>
+
+      P.timed(1000, function() {<br>
+        console.log("then")<br>
+      })
+    </section>
+
+    <section class='example'>
+      After
+    </section>
+
+    <section class='example'>
+      Infinite
+    </section>
+
+    <section class='example'>
+      counted
+    </section>
+
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
     <!-- endbower -->
@@ -30,5 +67,59 @@
     <script src="scripts/lib/Perezoso.js"></script>
     <script src="scripts/main.js"></script>
     <!-- endbuild -->
+    <script>
+
+
+    /*
+    P.infinite(1500, function() {
+      var h = Math.floor(Math.random() * 36) + 10;
+      var w = Math.floor(Math.random() * 30) + 10;
+      var b = Math.floor(Math.random() * 5) + 1;
+      console.log("h: " + h + " w: " + w)
+      var elm = document.getElementById("box");
+      //elm.style.width = w + "em";
+      //elm.style.height = h + "em";
+      //elm.style.border = b + "px solid";
+    });*/
+
+    //TEST CODE
+    // P.timed(1000, function() {
+    //   console.log("Timed")
+    // })
+
+    // var k3 = P.timed(6000, function() {
+    //   console.log("after")
+    // });
+    // //console.log("id is: " + k3)
+    // var anything = P.after(k3, 1000, function() {
+    //   console.log("...can be killed")
+    // });
+    //
+    // P.after(anything, 1000, function() {
+    //   console.log("another anything")
+    // });
+    //
+    //
+    // //infinite
+    // var inf = P.infinite(20, function() {
+    //   console.log("forever");
+    // });
+    //
+    // P.timed(1000, function() {
+    //   P.remove(inf)
+    // })
+    //
+    // var c = P.counted(200, 10, function() {
+    //   console.log("heh")
+    // });
+    //
+    function displayMessage(msg) {
+      console.log(msg);
+    }
+
+    P.timed(3500, displayMessage, "I <3 JS");
+
+
+    </script>
   </body>
 </html>
