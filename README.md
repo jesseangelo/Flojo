@@ -21,7 +21,7 @@ P.after(taskId, timeInMS, function())
 ```
 And finally, tasks can also be removed.
 ```
-P.after(taskId, timeInMS, function())
+P.remove(taskId)
 ```
 
 
