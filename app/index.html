@@ -41,14 +41,21 @@
     Timed
     <section class='example'>
 
+      P.timed(1000, function() {<br>
+        console.log("then")<br>
+      })
     </section>
 
     <section class='example'>
-
+      After
     </section>
 
     <section class='example'>
+      Infinite
+    </section>
 
+    <section class='example'>
+      counted
     </section>
 
     <!-- build:js scripts/vendor.js -->
@@ -63,7 +70,7 @@
     <script>
 
     P.timed(1000, function() {
-      console.log("then")
+      console.log("Timed")
     })
 
     /*
@@ -86,7 +93,19 @@
       console.log("...can be killed")
     });
 
-    P.remove(anything);
+
+    //infinite
+    var inf = P.infinite(20, function() {
+      console.log("forever");
+    });
+
+    P.timed(1000, function() {
+      P.remove(inf)
+    })
+
+    var c = P.counted(200, 10, function() {
+      console.log("heh")
+    });
 
     //console.log("anything? : " + anything)
 

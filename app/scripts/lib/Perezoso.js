@@ -7,7 +7,7 @@ var P = (function() {
       currentTaskId = 0,
       isRunning = false,
       intervalID = null,
-      _debug = true,
+      _debug = false,
       getNewTaskId = function() {
         return ++currentTaskId;
       },
@@ -30,7 +30,7 @@ var P = (function() {
       getNewWhen = function(interval) {
         var d = new Date();
         return d.getTime() + interval;
-      }
+      },
       findTime = function() {
         var d = new Date();
         var myT = d.getTime();
@@ -95,39 +95,36 @@ var P = (function() {
       kill = function(id) {
         tasksTimed.forEach(function(task, index) {
           if(task != null) {
-            var myId = task.id;
-            if(myId == id)
+            if(task.id == id)
             {
               tasksTimed[index] = null;
-              if(_debug) { console.log('task killed: ' + id) }
+              //if(_debug) { console.log('task killed: ' + id) }
             }
           }
         });
-        // tasksTimed.forEach(function(task, index) {
-        //   if(task != null) {
-        //     var myId = task.id;
-        //     if(myId == taskToKill.id)
-        //     {
-        //       tasksTimed[index] = null;
-        //     }
-        //   }
-        // });
-        // tasksCounted.forEach(function(task, index) {
-        //   var myId = task.id;
-        //   if(myId == taskToKill.id)
-        //   {
-        //     tasksCounted[index] = null;
-        //   }
-        // });
-        // tasksInfinite.forEach(function(task, index) {
-        //   if(task != null) {
-        //     var myId = task.id;
-        //     if(myId == taskToKill.id)
-        //     {
-        //       tasksInfinite[index] = null;
-        //     }
-        //   }
-        // });
+        tasksTimed.forEach(function(task, index) {
+          if(task != null) {
+            if(task.id == id)
+            {
+              tasksTimed[index] = null;
+            }
+          }
+        });
+        tasksCounted.forEach(function(task, index) {
+          var myId = task.id;
+          if(task.id == id)
+          {
+            tasksCounted[index] = null;
+          }
+        });
+        tasksInfinite.forEach(function(task, index) {
+          if(task != null) {
+            if(task.id == id)
+            {
+              tasksInfinite[index] = null;
+            }
+          }
+        });
         cleanList();
       },
       getTaskFromId = function(id) {
@@ -138,59 +135,66 @@ var P = (function() {
 
   //Public
   return {
+    //Creates a simple task that runs at 'when' ms in the future
+    timed: function(when, func, param) {
+      var date = new Date(),
+          time = date.getTime(),
+          myWhen = time + when,
+          myId = getNewTaskId();
 
-    timed: function(w, f, p) {
-      var d = new Date();
-      var t = d.getTime();
-      var myW = t + w;
-      var myId = getNewTaskId();
-      tasksTimed.push({id: myId, start: t, when: myW, func: f, param: p });
+      tasksTimed.push({id: myId, start: time, when: myWhen, func: func, param: param });
       if(_debug) console.log("added: " + w + " f: " + f);
       init();
       return myId;
     },
 
-    after: function(id, when, myFunc, myParam) {
-      console.log(id)
+    //Creates a simple task that runs some ms after a the specified task specified by id
+    after: function(id, when, func, param) {
       var date = new Date(),
           time = date.getTime(),
-          myWhen = mywhen = getTaskFromId(id).when + when,
+          myWhen = getTaskFromId(id).when + when,
           myId = getNewTaskId();
 
-      tasksTimed.push({id: myId, start: time, when: myWhen, func: myFunc, param: myParam });
+      tasksTimed.push({id: myId, start: time, when: myWhen, func: func, param: param });
       return myId;
+    },
+
+    //Create a task that runs forever at an interval
+    infinite: function(when, func, param) {
+      var date = new Date(),
+          time = date.getTime(),
+          myWhen = time + when,
+          myId = getNewTaskId();
+
+      tasksInfinite.push({id: myId, interval: when, when: myWhen, func: func, param: param });
+      if(_debug) console.log("added Infinite: " + w + " f: " + f);
+      init();
+      return myId;
+    },
+
+    //Creates a task that runs a specified number of times at an interval
+    counted: function(when, count, func, param) {
+      //error checking for values
+      var date = new Date(),
+          time = date.getTime(),
+          myWhen = time + when,
+          myId = getNewTaskId();
+
+      tasksCounted.push({id: myId, interval: when, when: myWhen, count: count, func: func, param: param });
+      if(_debug) console.log("added Counted: " + w + " f: " + f + " C: " + c);
+      init();
+      return myId;
+    },
+
+    remove: function (id) {
+      if(_debug) console.log("Killing task " + id)
+      kill(id);
     },
 
     // then: function(w, f, p) {
     //   this.timed(w, f, p, currentTaskId);
     //   return this;
     // },
-    infinite: function(w, f, p) {
-      var d = new Date();
-      var t = d.getTime();
-      var myW = t + w;
-      var myId = getNewTaskId();
-      tasksInfinite.push({id: myId, interval: w, when: myW, func: f, param: p });
-      if(_debug) console.log("added Infinite: " + w + " f: " + f);
-      init();
-      //this.id = myId;
-      return this;
-    },
-    counted: function(w, c, f, p) {
-      //error checking for values
-      var d = new Date();
-      var t = d.getTime();
-      var myW = t + w;
-      var myId = getNewTaskId();
-      tasksCounted.push({id: myId, interval: w, when: myW, count: c, func: f, param: p });
-      if(_debug) console.log("added Counted: " + w + " f: " + f + " C: " + c);
-      init();
-      return myId;
-    },
-    remove: function (id) {
-      if(_debug) console.log("Killing task " + id)
-      kill(id);
-    }
 
     //get time since and smooth animatnion
     //shouldn't just run at 10ms
