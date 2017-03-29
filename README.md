@@ -15,6 +15,15 @@ P.infinite(timeInMS, function())
 ```
 P.counted(timeInMS, count, function())
 ```
+Tasks can be run after one another with the after() function. This will run the specified task after the first task has been executed.
+```
+P.after(taskId, timeInMS, function())
+```
+And finally, tasks can also be removed.
+```
+P.after(taskId, timeInMS, function())
+```
+
 
 ## Some examples
 ### timed(timeInMS, function)
@@ -45,6 +54,17 @@ P.infinite(3500, function(){
 P.counted(1500, 4, function(){
     document.write("Will run 4 times")
 });
+```
+
+### after(taskId, timeInMS, function, parameter)
+```
+var id = P.timed(2000, function(){
+    document.write("You win!!")
+});
+
+P.after(id, 1000, function() {
+    document.write("You win again!")
+})
 ```
 
 ### remove(id)
