@@ -1,5 +1,5 @@
 var P = (function() {
-
+//var P = function(arg) {
   //Private
   var tasksTimed = [],
       tasksInfinite = [],
@@ -7,7 +7,7 @@ var P = (function() {
       currentTaskId = 0,
       isRunning = false,
       intervalID = null,
-      _debug = true,
+      _debug = false,
       getNewTaskId = function() {
         return ++currentTaskId;
       },
@@ -139,7 +139,9 @@ var P = (function() {
   //Public
   return {
 
+
     timed: function(w, f, p) {
+      console.log('arg is ' + arg)
       var d = new Date();
       var t = d.getTime();
       var myW = t + w;
@@ -190,7 +192,15 @@ var P = (function() {
     remove: function (id) {
       if(_debug) console.log("Killing task " + id)
       kill(id);
+    },
+    waitFor: function(obj, prop, value) {
+      console.log("wait for " + obj + " = " + value )
+      this.timed(1000, function() {
+        if(obj[prop] == value)
+          console.log("is " + value)
+      })
     }
+
 
     //get time since and smooth animatnion
     //shouldn't just run at 10ms
@@ -235,3 +245,8 @@ var P = (function() {
     // addClass, removeClass
   }
 }(P || {}));
+
+
+// var P = function(arg) {
+//   console.log('disambig ' + arg)
+// }

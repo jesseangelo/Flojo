@@ -39,7 +39,7 @@
     <br>
 
     Timed
-    <section class='example'>
+    <section class='example' id='timed'>
 
     </section>
 
@@ -61,10 +61,36 @@
     <script src="scripts/main.js"></script>
     <!-- endbuild -->
     <script>
+    //P('.hello').timed();
 
-    P.timed(1000, function() {
-      console.log("then")
-    })
+
+    //what would object syntax look like?
+    // P.delayed({when: 1000, target: "#timed", addClass: ".flip"})
+    // P.animate({target: "#timed", addClass: ".flip"})
+    // P.animate({duration: 250, target: "#timed", opacity})
+    //
+    // P.infinite({when: 250, function() {
+    // }})
+    //
+    // P.timed(1000, function() {
+    //   console.log("then")
+    // });
+    //
+    // var seq = P.sequence();
+    // seq.step().step().step()
+
+    //Wait FOR
+    var n = {
+      val: 1
+    };
+    P.waitFor(n, "val", 2)
+    n.val = 2;
+
+    //P.waitFor("n == 2").then(function(){
+
+    //})
+
+    //P.timed(1000, "#timed", function() {})
 
     /*
     P.infinite(1500, function() {
@@ -89,6 +115,8 @@
     P.remove(anything);
 
     //console.log("anything? : " + anything)
+
+
 
     </script>
   </body>
