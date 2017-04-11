@@ -1,22 +1,84 @@
+// NOTES
+
+
+//get time since and smooth animatnion
+//shouldn't just run at 10ms
+//type of task (use for throwing errors)
+//animate selector
+//  return (typeof(_doc) === "undefined") ? e : (_doc.querySelectorAll ? _doc.querySelectorAll(e) : _doc.getElementById((e.charAt(0) === "#") ? e.substr(1) : e));
+//request animatino frame
+
+//add class, other jquery-ish function
+//provide interface for css anims
+
+//https://14islands.com/blog/2015/03/13/transitioning-to-web-animations-from-greensock-gsap/?
+
+// TweenLite.to = function(target, duration, vars) {
+//  return new TweenLite(target, duration, vars);
+// };
+
+// //simple 'timed' task
+// P.timed()
+//
+// //infinite
+// P.infinite
+//
+// //counted
+// P.counted()
+//
+// P.remove()
+// P.pause()
+// P.stop()
+// P.reverse()
+//
+// var mySeq = P.sequence() //timeline?
+// mySeq.then().then().then()
+//
+// P.watch().until()
+//
+//
+// //utils
+// random number
+// animate
+// find selector
+// addClass, removeClass
+
+
 //var P = (function(arg) {
 var P = function(arg) {
   //Private
+
+  //do we need one for each? I don't think so
   var tasksTimed = [],
       tasksInfinite = [],
       tasksCounted = [],
+      
+      //legacy from when each P would be an object
       currentTaskId = 0,
+
+      //tracking
       isRunning = false,
       intervalID = null,
-      _debug = false,
-      arg = arg,
-      el,
+      _debug = false;
+
+
       
-  
+      //P()
+    //GET ELEMENT
+  var el, 
       getEl = function(arg) {
         console.log('elm' + arg)
         return document.querySelectorAll(arg) //class
-      },
-      getNewTaskId = function() {
+      };
+
+      //to start
+      //should be part of an init?
+      if(arg != undefined) { 
+        el = getEl(arg) 
+      } 
+
+      //P.
+  var getNewTaskId = function() {
         return ++currentTaskId;
       },
       init = function() {
@@ -144,15 +206,12 @@ var P = function(arg) {
         });
       }
 
-      //to start
-      if(arg != undefined) { 
-        el = getEl(arg) 
-      } 
       /// PUBLIC FUNCTIONS
 
   //Public
   return {
 
+    //P()
     addClass: function(c){ 
       el.forEach(function(element) {
         if (element.classList) 
@@ -161,9 +220,13 @@ var P = function(arg) {
           element.className += ' ' + c;
       });
     },
+    //removeClass
+    //
 
+
+    //P.
     timed: function(w, f, p) {
-      console.log('arg is ' + arg)
+      //console.log('arg is ' + arg)
       var d = new Date();
       var t = d.getTime();
       var myW = t + w;
@@ -173,7 +236,6 @@ var P = function(arg) {
       init();
       return myId;
     },
-
     after: function(id, when, myFunc, myParam) {
       console.log(id)
       var date = new Date(),
@@ -184,7 +246,6 @@ var P = function(arg) {
       tasksTimed.push({id: myId, start: time, when: myWhen, func: myFunc, param: myParam });
       return myId;
     },
-
     // then: function(w, f, p) {
     //   this.timed(w, f, p, currentTaskId);
     //   return this;
@@ -222,49 +283,6 @@ var P = function(arg) {
           console.log("is " + value)
       })
     }
-
-
-    //get time since and smooth animatnion
-    //shouldn't just run at 10ms
-    //type of task (use for throwing errors)
-    //animate selector
-    //	return (typeof(_doc) === "undefined") ? e : (_doc.querySelectorAll ? _doc.querySelectorAll(e) : _doc.getElementById((e.charAt(0) === "#") ? e.substr(1) : e));
-    //request animatino frame
-
-    //add class, other jquery-ish function
-    //provide interface for css anims
-
-    //https://14islands.com/blog/2015/03/13/transitioning-to-web-animations-from-greensock-gsap/?
-
-    // TweenLite.to = function(target, duration, vars) {
-		// 	return new TweenLite(target, duration, vars);
-		// };
-
-    // //simple 'timed' task
-    // P.timed()
-    //
-    // //infinite
-    // P.infinite
-    //
-    // //counted
-    // P.counted()
-    //
-    // P.remove()
-    // P.pause()
-    // P.stop()
-    // P.reverse()
-    //
-    // var mySeq = P.sequence() //timeline?
-    // mySeq.then().then().then()
-    //
-    // P.watch().until()
-    //
-    //
-    // //utils
-    // random number
-    // animate
-    // find selector
-    // addClass, removeClass
   }
 //}(P || {}));
 }
