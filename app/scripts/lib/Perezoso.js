@@ -65,16 +65,18 @@ var P = function(arg) {
       
       //P()
     //GET ELEMENT
-  var el, 
+  var els = [], 
       getEl = function(arg) {
-        console.log('elm' + arg)
+        //console.log('elm ' + arg)
         return document.querySelectorAll(arg) //class
       };
 
       //to start
       //should be part of an init?
       if(arg != undefined) { 
-        el = getEl(arg) 
+        //if class
+        els = document.querySelectorAll(arg) 
+        //console.log(els)
       } 
 
       //P.
@@ -213,7 +215,8 @@ var P = function(arg) {
 
     //P()
     addClass: function(c){ 
-      el.forEach(function(element) {
+      //console.log(c)
+      els.forEach(function(element) {
         if (element.classList) 
           element.classList.add(c);
         else
@@ -221,10 +224,12 @@ var P = function(arg) {
       });
     },
     removeClass: function(c) {
-      if (el.classList)
-        el.classList.remove(c);
-      else
-        el.c = el.c.replace(new RegExp('(^|\\b)' + c.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+      els.forEach(function(element) {
+        if (element.classList)
+          element.classList.remove(c);
+        else
+          element.classList = element.classList.replace(new RegExp('(^|\\b)' + c.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+      });
     },
     hide: function() {
       el.style.display = 'none';

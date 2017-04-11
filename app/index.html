@@ -30,7 +30,8 @@
         border: 2px solid;
         margin-bottom: 2em;
       }
-      .test { background-color: red; }
+      .test_good { background-color: green; }
+      .test_bad { background-color: red; }
     </style>
   </head>
   <body>
@@ -40,15 +41,32 @@
     <br>
 
     Timed
-    <section class='example' id='timed'>
+    <section class='example timed'>
 
     </section>
 
-    <section class='example'>
+    After
+    <section class='example after'>
 
     </section>
 
-    <section class='example'>
+    Infinite
+    <section class='example infinite'>
+
+    </section>
+
+    Counted
+    <section class='example counted'>
+
+    </section>
+
+    Remove
+    <section class='example remove'>
+
+    </section>
+
+    Wait For
+    <section class='example waitfor'>
 
     </section>
 
@@ -62,28 +80,28 @@
     <script src="scripts/main.js"></script>
     <!-- endbuild -->
     <script>
-    //attribute based or function based???
-    P('.hello');
+ 
+    P('.timed').addClass('test_bad')
+    P('.counted').addClass('test_bad')
+    P('.infinite').addClass('test_bad');
+
     P.timed(1000, function() {
-      console.log('running!')
+      P('.timed').removeClass('test_bad')
+      P('.timed').addClass('test_good');
     });
-    P.timed(1000, function() {
-      P('.example').addClass('test');
+ 
+
+    P.infinite(1000, function() {
+      P('.infinite').removeClass('test_bad');
+      P('.infinite').addClass('test_good');
     });
 
+    P.counted(1000, 5, function() {
+      P('.counted').removeClass('test_bad');
+      P('.counted').addClass('test_good');
+    });
 
-
-    //what would object syntax look like?
-    // P.delayed({when: 1000, target: "#timed", addClass: ".flip"})
-    // P.animate({target: "#timed", addClass: ".flip"})
-    // P.animate({duration: 250, target: "#timed", opacity})
-    //
-    // P.infinite({when: 250, function() {
-    // }})
-    //
-    // P.timed(1000, function() {
-    //   console.log("then")
-    // });
+   
     //
     // var seq = P.sequence();
     // seq.step().step().step()
@@ -96,7 +114,7 @@
     // n.val = 2;
 
     //P.waitFor("n == 2").then(function(){
-
+    //  P('.waitfor').addClass('test_good')
     //})
 
     //P.timed(1000, "#timed", function() {})
