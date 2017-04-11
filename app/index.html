@@ -30,6 +30,7 @@
         border: 2px solid;
         margin-bottom: 2em;
       }
+      .test { background-color: red; }
     </style>
   </head>
   <body>
@@ -61,7 +62,15 @@
     <script src="scripts/main.js"></script>
     <!-- endbuild -->
     <script>
-    //P('.hello').timed();
+    //attribute based or function based???
+    P('.hello');
+    P.timed(1000, function() {
+      console.log('running!')
+    });
+    P.timed(10000, function() {
+      P('.example').addClass('test');
+    });
+
 
 
     //what would object syntax look like?
@@ -80,11 +89,11 @@
     // seq.step().step().step()
 
     //Wait FOR
-    var n = {
-      val: 1
-    };
-    P.waitFor(n, "val", 2)
-    n.val = 2;
+    // var n = {
+    //   val: 1
+    // };
+    // P.waitFor(n, "val", 2)
+    // n.val = 2;
 
     //P.waitFor("n == 2").then(function(){
 
@@ -104,15 +113,15 @@
       //elm.style.border = b + "px solid";
     });*/
 
-    var k3 = P.timed(6000, function() {
-      console.log("after")
-    });
-    //console.log("id is: " + k3)
-    var anything = P.after(k3, 1000, function() {
-      console.log("...can be killed")
-    });
+    // var k3 = P.timed(6000, function() {
+    //   console.log("after")
+    // });
+    // //console.log("id is: " + k3)
+    // var anything = P.after(k3, 1000, function() {
+    //   console.log("...can be killed")
+    // });
 
-    P.remove(anything);
+    // P.remove(anything);
 
     //console.log("anything? : " + anything)
 

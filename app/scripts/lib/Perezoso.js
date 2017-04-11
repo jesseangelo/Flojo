@@ -1,5 +1,5 @@
-var P = (function() {
-//var P = function(arg) {
+//var P = (function(arg) {
+var P = function(arg) {
   //Private
   var tasksTimed = [],
       tasksInfinite = [],
@@ -8,6 +8,14 @@ var P = (function() {
       isRunning = false,
       intervalID = null,
       _debug = false,
+      arg = arg,
+      el,
+      
+  
+      getEl = function(arg) {
+        console.log('elm' + arg)
+        return document.querySelectorAll(arg) //class
+      },
       getNewTaskId = function() {
         return ++currentTaskId;
       },
@@ -30,7 +38,7 @@ var P = (function() {
       getNewWhen = function(interval) {
         var d = new Date();
         return d.getTime() + interval;
-      }
+      },
       findTime = function() {
         var d = new Date();
         var myT = d.getTime();
@@ -136,9 +144,23 @@ var P = (function() {
         });
       }
 
+      //to start
+      if(arg != undefined) { 
+        el = getEl(arg) 
+      } 
+      /// PUBLIC FUNCTIONS
+
   //Public
   return {
 
+    addClass: function(c){ 
+      el.forEach(function(element) {
+        if (element.classList) 
+          element.classList.add(c);
+        else
+          element.className += ' ' + c;
+      });
+    },
 
     timed: function(w, f, p) {
       console.log('arg is ' + arg)
@@ -224,7 +246,7 @@ var P = (function() {
     // //infinite
     // P.infinite
     //
-    // //Counted
+    // //counted
     // P.counted()
     //
     // P.remove()
@@ -244,9 +266,27 @@ var P = (function() {
     // find selector
     // addClass, removeClass
   }
-}(P || {}));
+//}(P || {}));
+}
+
+//TRANSLATION
+P.timed = function(w, f, p) {
+  P().timed(w, f, p);
+}
+P.after = function(id, w, f, p) {
+  P().after(id, w, f, p);
+}
+P.infinite = function(w, f, p) {
+  P().infinite(w, f, p);
+}
+P.counted = function(w, c, f, p) {
+  P().counted(w, c, f, p);
+}
+P.remove = function(id) {
+  P().remove(id);
+}
+P.waitFor = function(obj, prop, value) {
+  P().waitFor(obj, prop, value);
+}
 
 
-// var P = function(arg) {
-//   console.log('disambig ' + arg)
-// }
