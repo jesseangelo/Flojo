@@ -220,9 +220,33 @@ var P = function(arg) {
           element.className += ' ' + c;
       });
     },
-    //removeClass
-    //
+    removeClass: function(c) {
+      if (el.classList)
+        el.classList.remove(c);
+      else
+        el.c = el.c.replace(new RegExp('(^|\\b)' + c.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+    },
+    hide: function() {
+      el.style.display = 'none';
+    },
+    show: function() {
+      el.style.display = '';
+    },
+    remove: function() {
+      el.parentNode.removeChild(el);
+    },
+    hasClass: function(c) {
+      if (el.classList)
+        el.classList.contains(c);
+      else
+        new RegExp('(^| )' + c + '( |$)', 'gi').test(el.c);
+    },
+    /*
+    */
+    //animate
+    //randomNum?
 
+    //need a task prototype
 
     //P.
     timed: function(w, f, p) {
