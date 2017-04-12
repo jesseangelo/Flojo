@@ -36,9 +36,7 @@
     </style>
   </head>
   <body>
-    P
-
-    <div id="box"></div>
+    <h1>PEREZOSO</h1>
     <br>
 
     Timed
@@ -71,6 +69,8 @@
 
     </section>
 
+    <div id="box"></div>
+
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
     <!-- endbower -->
@@ -87,9 +87,13 @@
     P('.after').addClass('test_bad');
     P('.infinite').addClass('test_bad');
 
-    PEREZOSO.timed(1000, function() {
+    var el = document.querySelector('.timed')
+      el.innerHTML = '2000ms';
+
+    PEREZOSO.timed(2000, function() {
       P('.timed').removeClass('test_bad')
       P('.timed').addClass('test_good');
+
     });
 
 
@@ -127,13 +131,13 @@
       var el = document.querySelector('.remove')
       el.innerHTML = 'Red if remove fails'
     });
-    
+
     //console.log("id is: " + k3)
     var removeMe = PEREZOSO.after(remo, 1000, function() {
       P('.counted').addClass('test_bad');
     });
 
-    P.remove(removeMe);
+    PEREZOSO.remove(removeMe);
 
    
     //
@@ -150,34 +154,20 @@
     //P.waitFor("n == 2").then(function(){
     //  P('.waitfor').addClass('test_good')
     //})
-
-    //P.timed(1000, "#timed", function() {})
-
-    /*
-    P.infinite(1500, function() {
-      var h = Math.floor(Math.random() * 36) + 10;
-      var w = Math.floor(Math.random() * 30) + 10;
-      var b = Math.floor(Math.random() * 5) + 1;
-      console.log("h: " + h + " w: " + w)
+    
+    //Box animation
+    PEREZOSO.infinite(1500, function() {
+      var h = Math.floor(Math.random() * 12) + 10;
+      var w = Math.floor(Math.random() * 10) + 10;
+      var b = Math.floor(Math.random() * 50) + 1;
+      //console.log("h: " + h + " w: " + w)
       var elm = document.getElementById("box");
-      //elm.style.width = w + "em";
-      //elm.style.height = h + "em";
-      //elm.style.border = b + "px solid";
-    });*/
+      elm.style.width = w + "em";
+      elm.style.height = h + "em";
+      elm.style.border = b + "px solid";
+    });
 
-    // var k3 = P.timed(6000, function() {
-    //   console.log("after")
-    // });
-    // //console.log("id is: " + k3)
-    // var anything = P.after(k3, 1000, function() {
-    //   console.log("...can be killed")
-    // });
-
-    // P.remove(anything);
-
-    //console.log("anything? : " + anything)
-
-
+   
 
     </script>
   </body>

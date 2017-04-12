@@ -295,11 +295,11 @@ var P = function(arg) {
 
       //to start
       //should be part of an init?
-      console.log('arg ' + arg)
+      //console.log('arg ' + arg)
       //if(typoeof arg == 'string') { 
         //if class
       els = document.querySelectorAll(arg) 
-      console.log('not object: ' + els)
+      //console.log('not object: ' + els)
       //} 
   return {
     addClass: function(c){ 
@@ -341,23 +341,3 @@ var P = function(arg) {
   }
 
 };
-
-// P.timed = function(w, f, p) {
-//   PEREZOSO.timed(w, f, p);
-//   console.log('translating')
-// }
-// P.after = function(id, w, f, p) {
-//   P().after(id, w, f, p);
-// }
-// P.infinite = function(w, f, p) {
-//   P().infinite(w, f, p);
-// }
-// P.counted = function(w, c, f, p) {
-//   P().counted(w, c, f, p);
-// }
-// P.remove = function(id) {
-//   P().remove(id);
-// }
-// P.waitFor = function(obj, prop, value) {
-//   P().waitFor(obj, prop, value);
-// }
