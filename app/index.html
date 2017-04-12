@@ -26,9 +26,10 @@
       }
       .example {
         width: 20em;
-        height: 10em;
+        height: 2em;
         border: 2px solid;
         margin-bottom: 2em;
+        padding: 1em;
       }
       .test_good { background-color: green; }
       .test_bad { background-color: red; }
@@ -81,25 +82,58 @@
     <!-- endbuild -->
     <script>
  
-    P('.timed').addClass('test_bad')
-    P('.counted').addClass('test_bad')
+    P('.timed').addClass('test_bad');
+    P('.counted').addClass('test_bad');
+    P('.after').addClass('test_bad');
     P('.infinite').addClass('test_bad');
 
-    P.timed(1000, function() {
+    PEREZOSO.timed(1000, function() {
       P('.timed').removeClass('test_bad')
       P('.timed').addClass('test_good');
     });
- 
 
-    P.infinite(1000, function() {
+
+    var testAfter = PEREZOSO.timed(1000, function() {
+      var el = document.querySelector('.after')
+      el.innerHTML = 'first test done, waiting..';
+    });
+    console.log("id is: " + testAfter)
+    PEREZOSO.after(testAfter, 5000, function() {
+      P('.after').removeClass('test_bad');
+      P('.after').addClass('test_good');
+      var el = document.querySelector('.after')
+      el.innerHTML = '';
+    });
+
+    var infCt = 0;
+    PEREZOSO.infinite(1000, function() {
       P('.infinite').removeClass('test_bad');
       P('.infinite').addClass('test_good');
+      var el = document.querySelector('.infinite')
+      el.innerHTML = 'infinite: ' + infCt++;
     });
 
-    P.counted(1000, 5, function() {
+    var counted = 0;
+    PEREZOSO.counted(1000, 5, function() {
       P('.counted').removeClass('test_bad');
       P('.counted').addClass('test_good');
+      var el = document.querySelector('.counted')
+      el.innerHTML = '5 : ' + ++counted;
     });
+
+
+    var remo = PEREZOSO.timed(2000, function() {
+      P('.remove').addClass('test_good');
+      var el = document.querySelector('.remove')
+      el.innerHTML = 'Red if remove fails'
+    });
+    
+    //console.log("id is: " + k3)
+    var removeMe = PEREZOSO.after(remo, 1000, function() {
+      P('.counted').addClass('test_bad');
+    });
+
+    P.remove(removeMe);
 
    
     //

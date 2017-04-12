@@ -44,9 +44,11 @@
 // addClass, removeClass
 
 
-//var P = (function(arg) {
-var P = function(arg) {
+var PEREZOSO = (function(arg) {
+//var P = function(arg) {
   //Private
+
+  var k = this;
 
   //do we need one for each? I don't think so
   var tasksTimed = [],
@@ -59,7 +61,7 @@ var P = function(arg) {
       //tracking
       isRunning = false,
       intervalID = null,
-      _debug = false;
+      _debug = true;
 
 
       
@@ -68,20 +70,22 @@ var P = function(arg) {
   var els = [], 
       getEl = function(arg) {
         //console.log('elm ' + arg)
-        return document.querySelectorAll(arg) //class
+        //return document.querySelectorAll(arg) //class
       };
 
       //to start
       //should be part of an init?
-      if(arg != undefined) { 
-        //if class
-        els = document.querySelectorAll(arg) 
-        //console.log(els)
-      } 
+      console.log('arg ' + arg)
+      // if(typoeof arg == 'string') { 
+      //   //if class
+      //   //els = document.querySelectorAll(arg) 
+      //   console.log('not object: ' + els)
+      // } 
 
       //P.
   var getNewTaskId = function() {
-        return ++currentTaskId;
+        console.log('currentTaskId: ' + currentTaskId)
+        return (currentTaskId++);
       },
       init = function() {
         if(intervalID === null) {
@@ -213,43 +217,7 @@ var P = function(arg) {
   //Public
   return {
 
-    //P()
-    addClass: function(c){ 
-      //console.log(c)
-      els.forEach(function(element) {
-        if (element.classList) 
-          element.classList.add(c);
-        else
-          element.className += ' ' + c;
-      });
-    },
-    removeClass: function(c) {
-      els.forEach(function(element) {
-        if (element.classList)
-          element.classList.remove(c);
-        else
-          element.classList = element.classList.replace(new RegExp('(^|\\b)' + c.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
-      });
-    },
-    hide: function() {
-      el.style.display = 'none';
-    },
-    show: function() {
-      el.style.display = '';
-    },
-    remove: function() {
-      el.parentNode.removeChild(el);
-    },
-    hasClass: function(c) {
-      if (el.classList)
-        el.classList.contains(c);
-      else
-        new RegExp('(^| )' + c + '( |$)', 'gi').test(el.c);
-    },
-    /*
-    */
-    //animate
-    //randomNum?
+    
 
     //need a task prototype
 
@@ -263,13 +231,14 @@ var P = function(arg) {
       tasksTimed.push({id: myId, start: t, when: myW, func: f, param: p });
       if(_debug) console.log("added: " + w + " f: " + f);
       init();
+      console.log('timed Id: ' + myId)
       return myId;
     },
     after: function(id, when, myFunc, myParam) {
-      console.log(id)
+      //console.log(id)
       var date = new Date(),
           time = date.getTime(),
-          myWhen = mywhen = getTaskFromId(id).when + when,
+          myWhen = getTaskFromId(id).when + when,
           myId = getNewTaskId();
 
       tasksTimed.push({id: myId, start: time, when: myWhen, func: myFunc, param: myParam });
@@ -313,27 +282,82 @@ var P = function(arg) {
       })
     }
   }
-//}(P || {}));
-}
+}(PEREZOSO || {}));
+//}
 
-//TRANSLATION
-P.timed = function(w, f, p) {
-  P().timed(w, f, p);
-}
-P.after = function(id, w, f, p) {
-  P().after(id, w, f, p);
-}
-P.infinite = function(w, f, p) {
-  P().infinite(w, f, p);
-}
-P.counted = function(w, c, f, p) {
-  P().counted(w, c, f, p);
-}
-P.remove = function(id) {
-  P().remove(id);
-}
-P.waitFor = function(obj, prop, value) {
-  P().waitFor(obj, prop, value);
-}
+//P functions
+var P = function(arg) {
+  var els = [], 
+      getEl = function(arg) {
+        //console.log('elm ' + arg)
+        //return document.querySelectorAll(arg) //class
+      };
 
+      //to start
+      //should be part of an init?
+      console.log('arg ' + arg)
+      //if(typoeof arg == 'string') { 
+        //if class
+      els = document.querySelectorAll(arg) 
+      console.log('not object: ' + els)
+      //} 
+  return {
+    addClass: function(c){ 
+      //console.log(c)
+      els.forEach(function(element) {
+        if (element.classList) 
+          element.classList.add(c);
+        else
+          element.className += ' ' + c;
+      });
+    },
+    removeClass: function(c) {
+      els.forEach(function(element) {
+        if (element.classList)
+          element.classList.remove(c);
+        else
+          element.classList = element.classList.replace(new RegExp('(^|\\b)' + c.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+      });
+    },
+    hide: function() {
+      el.style.display = 'none';
+    },
+    show: function() {
+      el.style.display = '';
+    },
+    remove: function() {
+      el.parentNode.removeChild(el);
+    },
+    hasClass: function(c) {
+      if (el.classList)
+        el.classList.contains(c);
+      else
+        new RegExp('(^| )' + c + '( |$)', 'gi').test(el.c);
+    }
+    /*
+    */
+    //animate
+    //randomNum?
+  }
 
+};
+
+// P.timed = function(w, f, p) {
+//   PEREZOSO.timed(w, f, p);
+//   console.log('translating')
+// }
+// P.after = function(id, w, f, p) {
+//   P().after(id, w, f, p);
+// }
+// P.infinite = function(w, f, p) {
+//   P().infinite(w, f, p);
+// }
+// P.counted = function(w, c, f, p) {
+//   P().counted(w, c, f, p);
+// }
+// P.remove = function(id) {
+//   P().remove(id);
+// }
+// P.waitFor = function(obj, prop, value) {
+//   P().waitFor(obj, prop, value);
+// }
