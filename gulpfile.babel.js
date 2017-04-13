@@ -162,7 +162,7 @@ gulp.task('dist_scripts', ['dist_supporting_files'], () => {
     .pipe($.babel())
     //.pipe($.sourcemaps.write('.'))
     .pipe($.size({title: 'build', gzip: true}))
-    .pipe(gulp.dest('dist/js'))
+    .pipe(gulp.dest('dist/'))
     .pipe(reload({stream: true}))
 });
 
