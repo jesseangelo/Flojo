@@ -1,70 +1,33 @@
 # Perezoso 3.0
 
-For they lazy Javascript programmers among us, here's PEREZOSO!
-
-PEREZOSO will wait and run a task (function) when you want.
-
-There are two main wait to run a task; timed and infinite.
-
-```
-PEREZOSO.addTimed(timeInMS, function())
-```
-```
-PEREZOSO.addInfinite(timeInMS, function())
-```
-
-## Some examples
-### addTimed(timeInMS, function)
-```
-PEREZOSO.addTimed(2000, function(){
-    document.write("You win!!")
-});
-```
-### addTimed(timeInMS, function, parameter)
-You can also reference a function and pass a parameter
-```
-function displayMessage(msg) {
-  console.log(msg);
-}
-
-PEREZOSO.addTimed(3500, displayMessage, "I <3 JS");
-```
-
-### addInfinite(timeInMS, function, parameter)
-```
-PEREZOSO.addInfinite(3500, function(){
-    document.write("Infinite")
-});
-```
-
 
 PEREZOSO is a task runner. It will wait and run a task (function) at a time you specify.
 
 There are three types of tasks: timed, infinite, and counted.
 
 ```
-P.timed(timeInMS, function())
+PEREZOSO.timed(timeInMS, function())
 ```
 ```
-P.infinite(timeInMS, function())
+PEREZOSO.infinite(timeInMS, function())
 ```
 ```
-P.counted(timeInMS, count, function())
+PEREZOSO.counted(timeInMS, count, function())
 ```
 Tasks can be run after one another with the after() function. This will run the specified task after the first task has been executed.
 ```
-P.after(taskId, timeInMS, function())
+PEREZOSO.after(taskId, timeInMS, function())
 ```
 And finally, tasks can also be removed.
 ```
-P.remove(taskId)
+PEREZOSO.remove(taskId)
 ```
 
 
 ## Some examples
 ### timed(timeInMS, function)
 ```
-P.timed(2000, function(){
+PEREZOSO.timed(2000, function(){
     document.write("You win!!")
 });
 ```
@@ -75,39 +38,39 @@ function displayMessage(msg) {
   console.log(msg);
 }
 
-P.timed(3500, displayMessage, "I <3 JS");
+PEREZOSO.timed(3500, displayMessage, "I <3 JS");
 ```
 
 ### infinite(timeInMS, function, parameter)
 ```
-P.infinite(3500, function(){
+PEREZOSO.infinite(3500, function(){
     document.write("Infinite")
 });
 ```
 
 ### counted(timeInMS, count, function, parameter)
 ```
-P.counted(1500, 4, function(){
+PEREZOSO.counted(1500, 4, function(){
     document.write("Will run 4 times")
 });
 ```
 
 ### after(taskId, timeInMS, function, parameter)
 ```
-var id = P.timed(2000, function(){
+var id = PEREZOSO.timed(2000, function(){
     document.write("You win!!")
 });
 
-P.after(id, 1000, function() {
+PEREZOSO.after(id, 1000, function() {
     document.write("You win again!")
 })
 ```
 
 ### remove(id)
 ```
-var k = P.infinite(3500, function(){
-    document.write("To be removed")
+var k = PEREZOSO.infinite(3500, function(){
+    document.write("Won't write")
 });
 
-P.remove(k);
+PEREZOSO.remove(k);
 ```
