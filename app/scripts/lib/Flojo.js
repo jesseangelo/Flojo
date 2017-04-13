@@ -31,6 +31,10 @@
 //
 // P.watch().until()
 
+//
+// var seq = P.sequence();
+// seq.steF().steF().steF() 
+
 
 
 var FLOJO = (function() {
