@@ -33,7 +33,7 @@
 
 
 
-var PEREZOSO = (function() {
+var FLOJO = (function() {
 //var P = function(arg) {
   //Private
 
@@ -249,11 +249,11 @@ var PEREZOSO = (function() {
       })
     }
   }
-}(PEREZOSO || {}));
+}(FLOJO || {}));
 //}
 
 //P functions
-var P = function(arg) {
+var F = function(arg) {
   var els = [], 
       getEl = function(arg) {
         //console.log('elm ' + arg)

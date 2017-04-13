@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Perezoso</title>
+    <title>FLOJO</title>
 
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <!-- Place favicon.ico in the root directory -->
@@ -77,73 +77,73 @@
     <!-- endbuild -->
 
     <!-- build:js scripts/main.js -->
-    <script src="scripts/lib/Perezoso.js"></script>
+    <script src="scripts/lib/Flojo.js"></script>
     <script src="scripts/main.js"></script>
     <!-- endbuild -->
     <script>
  
-    P('.timed').addClass('test_bad');
-    P('.counted').addClass('test_bad');
-    P('.after').addClass('test_bad');
-    P('.infinite').addClass('test_bad');
-    P('.waitfor').addClass('test_bad');
+    F('.timed').addClass('test_bad');
+    F('.counted').addClass('test_bad');
+    F('.after').addClass('test_bad');
+    F('.infinite').addClass('test_bad');
+    F('.waitfor').addClass('test_bad');
 
     var el = document.querySelector('.timed')
       el.innerHTML = '2000ms';
 
-    PEREZOSO.timed(2000, function() {
-      P('.timed').removeClass('test_bad')
-      P('.timed').addClass('test_good');
+    FLOJO.timed(2000, function() {
+      F('.timed').removeClass('test_bad')
+      F('.timed').addClass('test_good');
 
     });
 
 
-    var testAfter = PEREZOSO.timed(1000, function() {
+    var testAfter = FLOJO.timed(1000, function() {
       var el = document.querySelector('.after')
       el.innerHTML = 'first test done, waiting..';
     });
     console.log("id is: " + testAfter)
-    PEREZOSO.after(testAfter, 5000, function() {
-      P('.after').removeClass('test_bad');
-      P('.after').addClass('test_good');
+    FLOJO.after(testAfter, 5000, function() {
+      F('.after').removeClass('test_bad');
+      F('.after').addClass('test_good');
       var el = document.querySelector('.after')
       el.innerHTML = '';
     });
 
     var infCt = 0;
-    PEREZOSO.infinite(1000, function() {
-      P('.infinite').removeClass('test_bad');
-      P('.infinite').addClass('test_good');
+    FLOJO.infinite(1000, function() {
+      F('.infinite').removeClass('test_bad');
+      F('.infinite').addClass('test_good');
       var el = document.querySelector('.infinite')
       el.innerHTML = 'infinite: ' + infCt++;
     });
 
     var counted = 0;
-    PEREZOSO.counted(1000, 5, function() {
-      P('.counted').removeClass('test_bad');
-      P('.counted').addClass('test_good');
+    FLOJO.counted(1000, 5, function() {
+      F('.counted').removeClass('test_bad');
+      F('.counted').addClass('test_good');
       var el = document.querySelector('.counted')
       el.innerHTML = '5 : ' + ++counted;
     });
 
 
-    var remo = PEREZOSO.timed(2000, function() {
-      P('.remove').addClass('test_good');
+    var remo = FLOJO.timed(2000, function() {
+      F('.remove').addClass('test_good');
       var el = document.querySelector('.remove')
       el.innerHTML = 'Red if remove fails'
     });
 
     //console.log("id is: " + k3)
-    var removeMe = PEREZOSO.after(remo, 1000, function() {
-      P('.counted').addClass('test_bad');
+    var removeMe = FLOJO.after(remo, 1000, function() {
+      F('.counted').addClass('test_bad');
     });
 
-    PEREZOSO.remove(removeMe);
+    FLOJO.remove(removeMe);
 
    
     //
     // var seq = P.sequence();
-    // seq.step().step().step()
+    // seq.steF().steF().steF()
 
     //Wait FOR
     var n = {
@@ -154,23 +154,23 @@
     el.innerHTML = 'Wait for n.val == 2 : ' + n.val;
 
     
-    PEREZOSO.waitFor(n, "val", 2, function() {
-      P('.waitfor').removeClass('test_bad');
-      P('.waitfor').addClass('test_good');
+    FLOJO.waitFor(n, "val", 2, function() {
+      F('.waitfor').removeClass('test_bad');
+      F('.waitfor').addClass('test_good');
       var el = document.querySelector('.waitfor')
       el.innerHTML = 'n.val == ' + n.val;
     })
-    PEREZOSO.timed(3000, function() {
+    FLOJO.timed(3000, function() {
       n.val = 2;
     })
     
 
-    // PEREZOSO.waitFor("n == 2").then(function(){
-    //  P('.waitfor').addClass('test_good')
+    // FLOJO.waitFor("n == 2").then(function(){
+    //  F('.waitfor').addClass('test_good')
     // })
     
     //Box animation
-    PEREZOSO.infinite(1500, function() {
+    FLOJO.infinite(1500, function() {
       var h = Math.floor(Math.random() * 12) + 10;
       var w = Math.floor(Math.random() * 10) + 10;
       var b = Math.floor(Math.random() * 50) + 1;
