@@ -8,14 +8,9 @@
 //  return (typeof(_doc) === "undefined") ? e : (_doc.querySelectorAll ? _doc.querySelectorAll(e) : _doc.getElementById((e.charAt(0) === "#") ? e.substr(1) : e));
 //request animatino frame
 
-//add class, other jquery-ish function
 //provide interface for css anims
 
 //https://14islands.com/blog/2015/03/13/transitioning-to-web-animations-from-greensock-gsap/?
-
-// TweenLite.to = function(target, duration, vars) {
-//  return new TweenLite(target, duration, vars);
-// };
 
 // //simple 'timed' task
 // P.timed()
@@ -35,20 +30,12 @@
 // mySeq.then().then().then()
 //
 // P.watch().until()
-//
-//
-// //utils
-// random number
-// animate
-// find selector
-// addClass, removeClass
 
 
-var PEREZOSO = (function(arg) {
+
+var PEREZOSO = (function() {
 //var P = function(arg) {
   //Private
-
-  var k = this;
 
   //do we need one for each? I don't think so
   var tasksTimed = [],
@@ -61,28 +48,8 @@ var PEREZOSO = (function(arg) {
       //tracking
       isRunning = false,
       intervalID = null,
-      _debug = true;
+      _debug = false;
 
-
-      
-      //P()
-    //GET ELEMENT
-  var els = [], 
-      getEl = function(arg) {
-        //console.log('elm ' + arg)
-        //return document.querySelectorAll(arg) //class
-      };
-
-      //to start
-      //should be part of an init?
-      console.log('arg ' + arg)
-      // if(typoeof arg == 'string') { 
-      //   //if class
-      //   //els = document.querySelectorAll(arg) 
-      //   console.log('not object: ' + els)
-      // } 
-
-      //P.
   var getNewTaskId = function() {
         console.log('currentTaskId: ' + currentTaskId)
         return (currentTaskId++);
@@ -147,7 +114,6 @@ var PEREZOSO = (function(arg) {
             task.when = getNewWhen(task.interval);
           }
         });
-
       },
       cleanList = function() {
         var newArray = [];
@@ -216,12 +182,8 @@ var PEREZOSO = (function(arg) {
 
   //Public
   return {
-
-    
-
     //need a task prototype
 
-    //P.
     timed: function(w, f, p) {
       //console.log('arg is ' + arg)
       var d = new Date();
@@ -279,6 +241,7 @@ var PEREZOSO = (function(arg) {
       this.timed(1000, function() {
         if(obj[prop] == value)
           console.log("is " + value)
+        //then remove function
       })
     }
   }

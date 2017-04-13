@@ -86,6 +86,7 @@
     P('.counted').addClass('test_bad');
     P('.after').addClass('test_bad');
     P('.infinite').addClass('test_bad');
+    P('.waitfor').addClass('test_bad');
 
     var el = document.querySelector('.timed')
       el.innerHTML = '2000ms';
@@ -145,15 +146,15 @@
     // seq.step().step().step()
 
     //Wait FOR
-    // var n = {
-    //   val: 1
-    // };
-    // P.waitFor(n, "val", 2)
-    // n.val = 2;
+    var n = {
+      val: 1
+    };
+    PEREZOSO.waitFor(n, "val", 2)
+    n.val = 2;
 
-    //P.waitFor("n == 2").then(function(){
+    // PEREZOSO.waitFor("n == 2").then(function(){
     //  P('.waitfor').addClass('test_good')
-    //})
+    // })
     
     //Box animation
     PEREZOSO.infinite(1500, function() {
