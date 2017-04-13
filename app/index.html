@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Perezoso</title>
+    <title>FLOJO</title>
 
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <!-- Place favicon.ico in the root directory -->
@@ -26,37 +26,50 @@
       }
       .example {
         width: 20em;
-        height: 10em;
+        height: 2em;
         border: 2px solid;
         margin-bottom: 2em;
+        padding: 1em;
       }
+      .test_good { background-color: green; }
+      .test_bad { background-color: red; }
     </style>
   </head>
   <body>
-    P
-
-    <div id="box"></div>
+    <h1>FLOJO</h1>
     <br>
 
     Timed
-    <section class='example'>
+    <section class='example timed'>
 
-      P.timed(1000, function() {<br>
-        console.log("then")<br>
-      })
     </section>
 
-    <section class='example'>
-      After
+    After
+    <section class='example after'>
+
     </section>
 
-    <section class='example'>
-      Infinite
+    Infinite
+    <section class='example infinite'>
+
     </section>
 
-    <section class='example'>
-      counted
+    Counted
+    <section class='example counted'>
+
     </section>
+
+    Remove
+    <section class='example remove'>
+
+    </section>
+
+    Wait For
+    <section class='example waitfor'>
+
+    </section>
+
+    <div id="box"></div>
 
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
@@ -64,61 +77,103 @@
     <!-- endbuild -->
 
     <!-- build:js scripts/main.js -->
-    <script src="scripts/lib/Perezoso.js"></script>
+    <script src="scripts/lib/Flojo.js"></script>
     <script src="scripts/main.js"></script>
     <!-- endbuild -->
     <script>
+ 
+    F('.timed').addClass('test_bad');
+    F('.counted').addClass('test_bad');
+    F('.after').addClass('test_bad');
+    F('.infinite').addClass('test_bad');
+    F('.waitfor').addClass('test_bad');
+
+    var el = document.querySelector('.timed')
+      el.innerHTML = '2000ms';
+
+    FLOJO.timed(2000, function() {
+      F('.timed').removeClass('test_bad')
+      F('.timed').addClass('test_good');
+
+    });
 
 
-    /*
-    P.infinite(1500, function() {
-      var h = Math.floor(Math.random() * 36) + 10;
-      var w = Math.floor(Math.random() * 30) + 10;
-      var b = Math.floor(Math.random() * 5) + 1;
-      console.log("h: " + h + " w: " + w)
+    var testAfter = FLOJO.timed(1000, function() {
+      var el = document.querySelector('.after')
+      el.innerHTML = 'first test done, waiting..';
+    });
+    console.log("id is: " + testAfter)
+    FLOJO.after(testAfter, 5000, function() {
+      F('.after').removeClass('test_bad');
+      F('.after').addClass('test_good');
+      var el = document.querySelector('.after')
+      el.innerHTML = '';
+    });
+
+    var infCt = 0;
+    FLOJO.infinite(1000, function() {
+      F('.infinite').removeClass('test_bad');
+      F('.infinite').addClass('test_good');
+      var el = document.querySelector('.infinite')
+      el.innerHTML = 'infinite: ' + infCt++;
+    });
+
+    var counted = 0;
+    FLOJO.counted(1000, 5, function() {
+      F('.counted').removeClass('test_bad');
+      F('.counted').addClass('test_good');
+      var el = document.querySelector('.counted')
+      el.innerHTML = '5 : ' + ++counted;
+    });
+
+
+    var remo = FLOJO.timed(2000, function() {
+      F('.remove').addClass('test_good');
+      var el = document.querySelector('.remove')
+      el.innerHTML = 'Red if remove fails'
+    });
+
+    //console.log("id is: " + k3)
+    var removeMe = FLOJO.after(remo, 1000, function() {
+      F('.counted').addClass('test_bad');
+    });
+
+    FLOJO.remove(removeMe);
+
+
+    //Wait FOR
+    var n = {
+      val: 1
+    };
+
+    var el = document.querySelector('.waitfor')
+    el.innerHTML = 'Wait for n.val == 2 : ' + n.val;
+
+    
+    FLOJO.waitFor(n, "val", 2, function() {
+      F('.waitfor').removeClass('test_bad');
+      F('.waitfor').addClass('test_good');
+      var el = document.querySelector('.waitfor')
+      el.innerHTML = 'n.val == ' + n.val;
+    })
+    FLOJO.timed(3000, function() {
+      n.val = 2;
+    })
+ 
+    
+    //Box animation
+    FLOJO.infinite(1500, function() {
+      var h = Math.floor(Math.random() * 12) + 10;
+      var w = Math.floor(Math.random() * 10) + 10;
+      var b = Math.floor(Math.random() * 50) + 1;
+      //console.log("h: " + h + " w: " + w)
       var elm = document.getElementById("box");
-      //elm.style.width = w + "em";
-      //elm.style.height = h + "em";
-      //elm.style.border = b + "px solid";
-    });*/
+      elm.style.width = w + "em";
+      elm.style.height = h + "em";
+      elm.style.border = b + "px solid";
+    });
 
-    //TEST CODE
-    // P.timed(1000, function() {
-    //   console.log("Timed")
-    // })
-
-    // var k3 = P.timed(6000, function() {
-    //   console.log("after")
-    // });
-    // //console.log("id is: " + k3)
-    // var anything = P.after(k3, 1000, function() {
-    //   console.log("...can be killed")
-    // });
-    //
-    // P.after(anything, 1000, function() {
-    //   console.log("another anything")
-    // });
-    //
-    //
-    // //infinite
-    // var inf = P.infinite(20, function() {
-    //   console.log("forever");
-    // });
-    //
-    // P.timed(1000, function() {
-    //   P.remove(inf)
-    // })
-    //
-    // var c = P.counted(200, 10, function() {
-    //   console.log("heh")
-    // });
-    //
-    function displayMessage(msg) {
-      console.log(msg);
-    }
-
-    P.timed(3500, displayMessage, "I <3 JS");
-
+   
 
     </script>
   </body>

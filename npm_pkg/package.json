@@ -1,0 +1,19 @@
+{
+  "name": "flojo",
+  "version": "3.0.0",
+  "description": "FLOJO is a task runner. It will wait and run a task (function) at a time you specify.",
+  "main": "flojo.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jesseangelo/Flojo.git"
+  },
+  "author": "Jesse Angelo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jesseangelo/Flojo/issues"
+  },
+  "homepage": "https://github.com/jesseangelo/Flojo#readme"
+}
