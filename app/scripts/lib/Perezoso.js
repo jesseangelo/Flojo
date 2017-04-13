@@ -48,7 +48,7 @@ var PEREZOSO = (function() {
       //tracking
       isRunning = false,
       intervalID = null,
-      _debug = false;
+      _debug = true;
 
   var getNewTaskId = function() {
         console.log('currentTaskId: ' + currentTaskId)
@@ -236,11 +236,15 @@ var PEREZOSO = (function() {
       if(_debug) console.log("Killing task " + id)
       kill(id);
     },
-    waitFor: function(obj, prop, value) {
-      console.log("wait for " + obj + " = " + value )
-      this.timed(1000, function() {
-        if(obj[prop] == value)
-          console.log("is " + value)
+    waitFor: function(obj, prop, value, myFunc) {
+      var f = myFunc;
+      //console.log("wait for " + obj + " = " + value )
+      this.infinite(1000, function() {
+        if(obj[prop] == value) {
+          //console.log("is " + value)
+          f();
+        }
+
         //then remove function
       })
     }

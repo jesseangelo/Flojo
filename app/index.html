@@ -149,8 +149,21 @@
     var n = {
       val: 1
     };
-    PEREZOSO.waitFor(n, "val", 2)
-    n.val = 2;
+
+    var el = document.querySelector('.waitfor')
+    el.innerHTML = 'Wait for n.val == 2 : ' + n.val;
+
+    
+    PEREZOSO.waitFor(n, "val", 2, function() {
+      P('.waitfor').removeClass('test_bad');
+      P('.waitfor').addClass('test_good');
+      var el = document.querySelector('.waitfor')
+      el.innerHTML = 'n.val == ' + n.val;
+    })
+    PEREZOSO.timed(3000, function() {
+      n.val = 2;
+    })
+    
 
     // PEREZOSO.waitFor("n == 2").then(function(){
     //  P('.waitfor').addClass('test_good')
