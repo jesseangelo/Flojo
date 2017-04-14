@@ -38,37 +38,31 @@
   <body>
     <h1>FLOJO</h1>
     <br>
+    Id
+    <section class='example' id="test_id"></section>
+    
+    Class
+    <section class='example test_class'></section>
 
     Timed
-    <section class='example timed'>
-
-    </section>
+    <section class='example timed'></section>
 
     After
-    <section class='example after'>
-
-    </section>
+    <section class='example after'></section>
 
     Infinite
-    <section class='example infinite'>
-
-    </section>
+    <section class='example infinite'></section>
 
     Counted
-    <section class='example counted'>
-
-    </section>
+    <section class='example counted'></section>
 
     Remove
-    <section class='example remove'>
-
-    </section>
+    <section class='example remove'></section>
 
     Wait For
-    <section class='example waitfor'>
+    <section class='example waitfor'></section>
 
-    </section>
-
+    Animation test
     <div id="box"></div>
 
     <!-- build:js scripts/vendor.js -->
@@ -81,12 +75,26 @@
     <script src="scripts/main.js"></script>
     <!-- endbuild -->
     <script>
- 
+
+    F('#test_id').addClass('test_bad');
+    F('.test_class').addClass('test_bad'); 
     F('.timed').addClass('test_bad');
     F('.counted').addClass('test_bad');
     F('.after').addClass('test_bad');
     F('.infinite').addClass('test_bad');
     F('.waitfor').addClass('test_bad');
+
+    FLOJO.timed(1000, function() {
+      F("#test_id").removeClass('test_bad');
+      F(".test_class").removeClass('test_bad');
+      F("#test_id").addClass('test_good');
+      F(".test_class").addClass('test_good');
+
+      var el = document.querySelector('.test_class')
+      el.innerHTML = 'F(.class)';
+      var el = document.getElementById('test_id')
+      el.innerHTML = 'F(#id)';
+    })
 
     var el = document.querySelector('.timed')
       el.innerHTML = '2000ms';
@@ -102,7 +110,7 @@
       var el = document.querySelector('.after')
       el.innerHTML = 'first test done, waiting..';
     });
-    console.log("id is: " + testAfter)
+    //console.log("id is: " + testAfter)
     FLOJO.after(testAfter, 5000, function() {
       F('.after').removeClass('test_bad');
       F('.after').addClass('test_good');
@@ -159,7 +167,6 @@
     FLOJO.timed(3000, function() {
       n.val = 2;
     })
- 
     
     //Box animation
     FLOJO.infinite(1500, function() {

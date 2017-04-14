@@ -38,7 +38,6 @@
 
 
 var FLOJO = (function() {
-//var P = function(arg) {
   //Private
 
   //do we need one for each? I don't think so
@@ -46,16 +45,15 @@ var FLOJO = (function() {
       tasksInfinite = [],
       tasksCounted = [],
       
-      //legacy from when each P would be an object
       currentTaskId = 0,
 
       //tracking
       isRunning = false,
       intervalID = null,
-      _debug = true;
+      _debug = false;
 
   var getNewTaskId = function() {
-        console.log('currentTaskId: ' + currentTaskId)
+        //console.log('currentTaskId: ' + currentTaskId)
         return (currentTaskId++);
       },
       init = function() {
@@ -189,7 +187,6 @@ var FLOJO = (function() {
     //need a task prototype
 
     timed: function(w, f, p) {
-      //console.log('arg is ' + arg)
       var d = new Date();
       var t = d.getTime();
       var myW = t + w;
@@ -197,7 +194,7 @@ var FLOJO = (function() {
       tasksTimed.push({id: myId, start: t, when: myW, func: f, param: p });
       if(_debug) console.log("added: " + w + " f: " + f);
       init();
-      console.log('timed Id: ' + myId)
+      //console.log('timed Id: ' + myId)
       return myId;
     },
     after: function(id, when, myFunc, myParam) {
@@ -258,23 +255,20 @@ var FLOJO = (function() {
 
 //P functions
 var F = function(arg) {
-  var els = [], 
-      getEl = function(arg) {
-        //console.log('elm ' + arg)
-        //return document.querySelectorAll(arg) //class
-      };
 
-      //to start
-      //should be part of an init?
-      //console.log('arg ' + arg)
-      //if(typoeof arg == 'string') { 
-        //if class
-      els = document.querySelectorAll(arg) 
-      //console.log('not object: ' + els)
-      //} 
+  var getEls = function(arg) {
+    //console.log('what: ' + arg.indexOf('#'))
+
+    if(arg.indexOf('#') != -1) {
+      return [document.getElementById(arg.substr(1))]
+    } else {
+      return document.querySelectorAll(arg) 
+    }
+  }
+
   return {
     addClass: function(c){ 
-      //console.log(c)
+      var els = getEls(arg)
       els.forEach(function(element) {
         if (element.classList) 
           element.classList.add(c);
@@ -283,6 +277,7 @@ var F = function(arg) {
       });
     },
     removeClass: function(c) {
+      var els = getEls(arg)
       els.forEach(function(element) {
         if (element.classList)
           element.classList.remove(c);
