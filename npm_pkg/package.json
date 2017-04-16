@@ -1,6 +1,6 @@
 {
   "name": "flojo",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "FLOJO is a task runner. It will wait and run a task (function) at a time you specify.",
   "main": "flojo.js",
   "scripts": {
