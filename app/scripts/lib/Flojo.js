@@ -1,10 +1,35 @@
 // FLOJO
 // pronounced flo-ho
-
+"use strict";
 
 
 var FLOJO = (function() {
   //Private
+  class Task {
+    constructor(id, type, start, when, func, param) {
+      this.id = id;
+      this.type = type;
+      this.start = start;
+      this.when = when;
+      this.func = func;
+      this.param = param;
+    }
+  }
+
+  class Counted extends Task {
+    constructor(id, type, interval, start, when, count, func, param) {
+      super(id, type, start, when, func, param);
+      this.interval = interval;
+      this.count = count;
+    }
+  }
+
+  class Infinite extends Task {
+    constructor(id, type, interval, start, when, func, param) {
+      super(id, type, start, when, func, param);
+      this.interval = interval;
+    }
+  }
 
   var tasks = [],
       
@@ -43,6 +68,7 @@ var FLOJO = (function() {
         var myT = d.getTime();
 
         tasks.forEach(function(task, index) {
+          if(task == null) return;
           var myW = task.when;
           if((myW-myT) < 0)
           {
@@ -102,94 +128,89 @@ var FLOJO = (function() {
           return t.id == id;
         });
       }
-
       /// PUBLIC FUNCTIONS
 
   //Public
   return {
     //need a task prototype
-
-    timed: function(w, f, p) {
+    timed: function(when, myFunc, myParam) {
       var d = new Date();
-      var t = d.getTime();
-      var myW = t + w;
-      var myId = getNewTaskId();
 
-      tasks.push({
-        type: 1,
-        id: myId,
-        start: t, 
-        when: myW, 
-        func: f, 
-        param: p 
-      });
+      var task = new Task(
+        getNewTaskId(),         //ID
+        1,                      //type
+        d.getTime(),            //start time
+        d.getTime() + when,     //end time
+        myFunc,                 //function
+        myParam)                //parameter
+
+      tasks.push(task);
 
       if(_debug) console.log("added: " + w + " f: " + f);
-      
 
       //console.log('timed Id: ' + myId)
-      return myId;
+      return task.id;
 
     },
     after: function(id, when, myFunc, myParam) {
       //console.log(id)
-      var date = new Date(),
-          time = date.getTime(),
-          myWhen = getTaskFromId(id).when + when,
-          myId = getNewTaskId();
+      var d = new Date();
 
-      tasks.push({
-        type: 1,
-        id: myId, 
-        start: time, 
-        when: myWhen, 
-        func: myFunc, 
-        param: myParam 
-      });
+      var task = new Task(
+        getNewTaskId(),
+        1,
+        d.getTime(),            //start time
+        d.getTime() + when,     //end time
+        myFunc,                 //function
+        myParam)                //parameter
+
+      tasks.push(task);
       
-      return myId;
+      return task.id;
     },
     // then: function(w, f, p) {
     //   this.timed(w, f, p, currentTaskId);
     //   return this;
     // },
 
-    counted: function(w, c, f, p) {
+    counted: function(when, count, myFunc, myParam) {
       //error checking for values
       var d = new Date();
-      var t = d.getTime();
-      var myW = t + w;
-      var myId = getNewTaskId();
 
-      tasks.push({
-        type: 2,
-        id: myId, 
-        interval: w, 
-        when: myW, 
-        count: c, 
-        func: f, 
-        param: p 
-      });
+      //var task = new Counted(myId, 2, w, startTime, myW, c, f, p)
+        var task = new Counted(
+          getNewTaskId(),         //ID
+          2,
+          when,                      //type
+          d.getTime(),            //start time
+          d.getTime() + when,     //end time
+          count,
+          myFunc,                 //function
+          myParam)                //parameter
+
+      tasks.push(task);
+
       
       if(_debug) console.log("added Counted: " + w + " f: " + f + " C: " + c);
       
-      return myId;
+      return task.id;
     },
 
-    infinite: function(w, f, p) {
+    infinite: function(when, myFunc, myParam) {
       var d = new Date();
-      var t = d.getTime();
-      var myW = t + w;
-      var myId = getNewTaskId();
       
-      tasks.push({
-        type: 3,
-        id: myId, 
-        interval: w, 
-        when: myW, 
-        func: f, 
-        param: p 
-      });
+      //var task = new Infinite(myId, 3, w, startTime, myW, f, p)
+
+      var task = new Infinite(
+          getNewTaskId(),         //ID
+          3,
+          when,                      //type
+          d.getTime(),            //start time
+          d.getTime() + when,     //end time
+          myFunc,                 //function
+          myParam)                //parameter
+
+      tasks.push(task);
       
       if(_debug) console.log("added Infinite: " + w + " f: " + f);
       
