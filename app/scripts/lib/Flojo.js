@@ -1,10 +1,12 @@
 // FLOJO
-// pronounced flo-ho
+// pronounced 'flo-ho'
 "use strict";
 
 
 var FLOJO = (function() {
-  //Private
+
+  //Class Definitions
+
   class Task {
     constructor(id, type, start, when, func, param) {
       this.id = id;
@@ -30,6 +32,8 @@ var FLOJO = (function() {
       this.interval = interval;
     }
   }
+
+  //Private variables and methods
 
   var tasks = [],
       
@@ -132,9 +136,11 @@ var FLOJO = (function() {
 
   //Public
   return {
-    //need a task prototype
+
     timed: function(when, myFunc, myParam) {
       var d = new Date();
+
+      if(when < 0) { throw new Error("When needs to be positive")}
 
       var task = new Task(
         getNewTaskId(),         //ID
@@ -177,11 +183,10 @@ var FLOJO = (function() {
       //error checking for values
       var d = new Date();
 
-      //var task = new Counted(myId, 2, w, startTime, myW, c, f, p)
-        var task = new Counted(
+      var task = new Counted(
           getNewTaskId(),         //ID
-          2,
-          when,                      //type
+          2,                      //type
+          when,                   //when
           d.getTime(),            //start time
           d.getTime() + when,     //end time
           count,
@@ -199,12 +204,10 @@ var FLOJO = (function() {
     infinite: function(when, myFunc, myParam) {
       var d = new Date();
       
-      //var task = new Infinite(myId, 3, w, startTime, myW, f, p)
-
       var task = new Infinite(
           getNewTaskId(),         //ID
-          3,
-          when,                      //type
+          3,                      //type
+          when,                   //when   
           d.getTime(),            //start time
           d.getTime() + when,     //end time
           myFunc,                 //function
@@ -213,8 +216,7 @@ var FLOJO = (function() {
       tasks.push(task);
       
       if(_debug) console.log("added Infinite: " + w + " f: " + f);
-      
-      //this.id = myId;
+
       return this;
     },
     remove: function (id) {
@@ -235,7 +237,6 @@ var FLOJO = (function() {
     }
   }
 }(FLOJO || {}));
-//}
 
 //P functions
 var F = function(arg) {
