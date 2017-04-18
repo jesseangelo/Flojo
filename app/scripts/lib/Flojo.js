@@ -1,49 +1,12 @@
-// NOTES
-
-
-//get time since and smooth animatnion
-//shouldn't just run at 10ms
-//type of task (use for throwing errors)
-//animate selector
-//  return (typeof(_doc) === "undefined") ? e : (_doc.querySelectorAll ? _doc.querySelectorAll(e) : _doc.getElementById((e.charAt(0) === "#") ? e.substr(1) : e));
-//request animatino frame
-
-//provide interface for css anims
-
-//https://14islands.com/blog/2015/03/13/transitioning-to-web-animations-from-greensock-gsap/?
-
-// //simple 'timed' task
-// P.timed()
-//
-// //infinite
-// P.infinite
-//
-// //counted
-// P.counted()
-//
-// P.remove()
-// P.pause()
-// P.stop()
-// P.reverse()
-//
-// var mySeq = P.sequence() //timeline?
-// mySeq.then().then().then()
-//
-// P.watch().until()
-
-//
-// var seq = P.sequence();
-// seq.steF().steF().steF() 
+// FLOJO
+// pronounced flo-ho
 
 
 
 var FLOJO = (function() {
   //Private
 
-  //do we need one for each? I don't think so
-  var tasksTimed = [],
-      tasksInfinite = [],
-      tasksCounted = [],
+  var tasks = [],
       
       currentTaskId = 0,
 
@@ -54,6 +17,7 @@ var FLOJO = (function() {
 
   var getNewTaskId = function() {
         //console.log('currentTaskId: ' + currentTaskId)
+        init();
         return (currentTaskId++);
       },
       init = function() {
@@ -65,9 +29,7 @@ var FLOJO = (function() {
       update = function() {
         findTime();
         cleanList();
-        if(tasksTimed.length == 0 &&
-          tasksInfinite.length == 0 &&
-          tasksCounted.length == 0) {
+        if(tasks.length == 0) {
           clearInterval(intervalID);
           intervalID = null;
         }
@@ -80,102 +42,63 @@ var FLOJO = (function() {
         var d = new Date();
         var myT = d.getTime();
 
-        tasksTimed.forEach(function(task, index) {
+        tasks.forEach(function(task, index) {
           var myW = task.when;
           if((myW-myT) < 0)
           {
             task.func(task.param);
-            tasksTimed[index] = null;
-          }
-        });
 
-        tasksCounted.forEach(function(task, index) {
-          var myW = task.when;
-          if((myW-myT) < 0)
-          {
-            task.func(task.param);
-            task.count--;
-            if(task.count > 0) {
-              var newT = myT + task.interval;
-              //if(_debug) console.log(newT);
-              task.when = getNewWhen(task.interval);
-            } else {
-              tasksCounted[index] = null;
+            switch(task.type)
+            {
+              case 1:     //timed
+                tasks[index] = null;
+                break;
+              case 2:     //count
+                task.count--;
+                if(task.count > 0) {
+                  var newT = myT + task.interval;
+                  //if(_debug) console.log(newT);
+                  task.when = getNewWhen(task.interval);
+                } else {
+                  tasks[index] = null;
+                }
+                break;
+              case 3:     //infinite
+                var newT = myT + task.interval;
+                task.when = getNewWhen(task.interval);
+                break;
+              default: 
+                break;
             }
-          }
-        });
 
-        tasksInfinite.forEach(function(task, index) {
-          var myW = task.when;
-          if((myW-myT) < 0)
-          {
-            task.func(task.param);
-            var newT = myT + task.interval;
-            //if(_debug) console.log(newT);
-            //task.when = d.getTime() + task.interval;
-            task.when = getNewWhen(task.interval);
+            
           }
         });
       },
       cleanList = function() {
         var newArray = [];
-        for(var q = 0; q < tasksTimed.length; q++) {
-          if(tasksTimed[q] != null) { newArray.push(tasksTimed[q]); }
+        for(var q = 0; q < tasks.length; q++) {
+          if(tasks[q] != null) { newArray.push(tasks[q]); }
         }
-        tasksTimed = newArray;
+        tasks = newArray;
 
-        var newCArray = [];
-        for(var q = 0; q < tasksCounted.length; q++) {
-          if(tasksCounted[q] != null) { newCArray.push(tasksCounted[q]); }
-        }
-        tasksCounted = newCArray;
-
-        var newIArray = [];
-        for(var q = 0; q < tasksInfinite.length; q++) {
-          if(tasksInfinite[q] != null) { newIArray.push(tasksInfinite[q]); }
-        }
-        tasksInfinite = newIArray;
       },
       kill = function(id) {
-        tasksTimed.forEach(function(task, index) {
+        tasks.forEach(function(task, index) {
           if(task != null) {
             var myId = task.id;
             if(myId == id)
             {
-              tasksTimed[index] = null;
+              tasks[index] = null;
               if(_debug) { console.log('task killed: ' + id) }
             }
           }
         });
-        // tasksTimed.forEach(function(task, index) {
-        //   if(task != null) {
-        //     var myId = task.id;
-        //     if(myId == taskToKill.id)
-        //     {
-        //       tasksTimed[index] = null;
-        //     }
-        //   }
-        // });
-        // tasksCounted.forEach(function(task, index) {
-        //   var myId = task.id;
-        //   if(myId == taskToKill.id)
-        //   {
-        //     tasksCounted[index] = null;
-        //   }
-        // });
-        // tasksInfinite.forEach(function(task, index) {
-        //   if(task != null) {
-        //     var myId = task.id;
-        //     if(myId == taskToKill.id)
-        //     {
-        //       tasksInfinite[index] = null;
-        //     }
-        //   }
-        // });
+       
         cleanList();
       },
       getTaskFromId = function(id) {
-        return tasksTimed.find(function(t) {
+        return tasks.find(function(t) {
           return t.id == id;
         });
       }
@@ -191,11 +114,22 @@ var FLOJO = (function() {
       var t = d.getTime();
       var myW = t + w;
       var myId = getNewTaskId();
-      tasksTimed.push({id: myId, start: t, when: myW, func: f, param: p });
+
+      tasks.push({
+        type: 1,
+        id: myId,
+        start: t, 
+        when: myW, 
+        func: f, 
+        param: p 
+      });
+
       if(_debug) console.log("added: " + w + " f: " + f);
-      init();
+      
+
       //console.log('timed Id: ' + myId)
       return myId;
+
     },
     after: function(id, when, myFunc, myParam) {
       //console.log(id)
@@ -204,34 +138,63 @@ var FLOJO = (function() {
           myWhen = getTaskFromId(id).when + when,
           myId = getNewTaskId();
 
-      tasksTimed.push({id: myId, start: time, when: myWhen, func: myFunc, param: myParam });
+      tasks.push({
+        type: 1,
+        id: myId, 
+        start: time, 
+        when: myWhen, 
+        func: myFunc, 
+        param: myParam 
+      });
+      
       return myId;
     },
     // then: function(w, f, p) {
     //   this.timed(w, f, p, currentTaskId);
     //   return this;
     // },
-    infinite: function(w, f, p) {
-      var d = new Date();
-      var t = d.getTime();
-      var myW = t + w;
-      var myId = getNewTaskId();
-      tasksInfinite.push({id: myId, interval: w, when: myW, func: f, param: p });
-      if(_debug) console.log("added Infinite: " + w + " f: " + f);
-      init();
-      //this.id = myId;
-      return this;
-    },
+
     counted: function(w, c, f, p) {
       //error checking for values
       var d = new Date();
       var t = d.getTime();
       var myW = t + w;
       var myId = getNewTaskId();
-      tasksCounted.push({id: myId, interval: w, when: myW, count: c, func: f, param: p });
+
+      tasks.push({
+        type: 2,
+        id: myId, 
+        interval: w, 
+        when: myW, 
+        count: c, 
+        func: f, 
+        param: p 
+      });
+      
       if(_debug) console.log("added Counted: " + w + " f: " + f + " C: " + c);
-      init();
+      
       return myId;
+    },
+
+    infinite: function(w, f, p) {
+      var d = new Date();
+      var t = d.getTime();
+      var myW = t + w;
+      var myId = getNewTaskId();
+      
+      tasks.push({
+        type: 3,
+        id: myId, 
+        interval: w, 
+        when: myW, 
+        func: f, 
+        param: p 
+      });
+      
+      if(_debug) console.log("added Infinite: " + w + " f: " + f);
+      
+      //this.id = myId;
+      return this;
     },
     remove: function (id) {
       if(_debug) console.log("Killing task " + id)
