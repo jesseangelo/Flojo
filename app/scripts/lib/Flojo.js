@@ -279,6 +279,14 @@ var F = function(arg) {
     remove: function() {
       el.parentNode.removeChild(el);
     },
+    opacity: function(o) {
+      var els = getEls(arg)
+      els.forEach(function(element) {
+         
+          element.style.opacity = o;
+        
+      });
+    },
     hasClass: function(c) {
       if (el.classList)
         el.classList.contains(c);
