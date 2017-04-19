@@ -38,6 +38,11 @@
   <body>
     <h1>FLOJO</h1>
     <br>
+    <button onclick='resurrect()'>Resurrect</button>
+
+    Resurrect
+    <section class='example resurrect'></section>
+
     Id
     <section class='example' id="test_id"></section>
     
@@ -86,6 +91,18 @@
 
     //FLOJO.timed(-1);
 
+    //
+    function resurrect() {
+      F('.resurrect').removeClass('test_good')
+      F('.resurrect').addClass('test_bad');
+
+      FLOJO.timed(2000, function() {
+        F('.resurrect').removeClass('test_bad')
+        F('.resurrect').addClass('test_good');
+
+      });
+    }
+
     FLOJO.timed(1000, function() {
       F("#test_id").removeClass('test_bad');
       F(".test_class").removeClass('test_bad');
@@ -108,12 +125,12 @@
     });
 
 
-    var testAfter = FLOJO.timed(10000, function() {
+    var testAfter = FLOJO.timed(5000, function() {
       var el = document.querySelector('.after')
       el.innerHTML = 'first test done, waiting..5000';
     });
     //console.log("id is: " + testAfter)
-    FLOJO.after(testAfter, 5000, function() {
+    FLOJO.after(testAfter, 1000, function() {
       F('.after').removeClass('test_bad');
       F('.after').addClass('test_good');
       var el = document.querySelector('.after')

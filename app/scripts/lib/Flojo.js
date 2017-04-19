@@ -51,17 +51,21 @@ var FLOJO = (function() {
       },
       init = function() {
         if(intervalID === null) {
-          intervalID = window.setInterval(update, 10);
+          intervalID = requestAnimationFrame(update);
           isRunning = true;
         }
       },
       update = function() {
         findTime();
+
         cleanList();
-        if(tasks.length == 0) {
-          clearInterval(intervalID);
+        
+        if(tasks.length) {
+          requestAnimationFrame(update)
+        } else {
           intervalID = null;
         }
+
       },
       getNewWhen = function(interval) {
         var d = new Date();
