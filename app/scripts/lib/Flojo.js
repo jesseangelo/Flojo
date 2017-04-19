@@ -65,15 +65,14 @@ var FLOJO = (function() {
         } else {
           intervalID = null;
         }
-
       },
       getNewWhen = function(interval) {
         var d = new Date();
-        return d.getTime() + interval;
+        return new Date().getTime() + interval;
       },
       findTime = function() {
         var d = new Date();
-        var myT = d.getTime();
+        var myT = new Date().getTime();
 
         tasks.forEach(function(task, index) {
           if(task == null) return;
@@ -115,7 +114,6 @@ var FLOJO = (function() {
           if(tasks[q] != null) { newArray.push(tasks[q]); }
         }
         tasks = newArray;
-
       },
       kill = function(id) {
         tasks.forEach(function(task, index) {
