@@ -108,9 +108,9 @@
     });
 
 
-    var testAfter = FLOJO.timed(1000, function() {
+    var testAfter = FLOJO.timed(10000, function() {
       var el = document.querySelector('.after')
-      el.innerHTML = 'first test done, waiting..';
+      el.innerHTML = 'first test done, waiting..5000';
     });
     //console.log("id is: " + testAfter)
     FLOJO.after(testAfter, 5000, function() {

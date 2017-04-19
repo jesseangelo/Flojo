@@ -161,12 +161,12 @@ var FLOJO = (function() {
     after: function(id, when, myFunc, myParam) {
       //console.log(id)
       var d = new Date();
-
+      
       var task = new Task(
         getNewTaskId(),
         1,
         d.getTime(),            //start time
-        d.getTime() + when,     //end time
+        getTaskFromId(id).when + when,     //end time
         myFunc,                 //function
         myParam)                //parameter
 
