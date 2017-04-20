@@ -65,6 +65,7 @@ var FLOJO = (function() {
           requestAnimationFrame(update)
         } else {
           intervalID = null;
+          currentTaskId = 0;
         }
       },
       getNewWhen = function(interval) {
