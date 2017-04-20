@@ -38,6 +38,9 @@
   <body>
     <h1>FLOJO</h1>
     <br>
+    Fade
+    <section class='example faded'></section>
+
     <button onclick='resurrect()'>Resurrect</button>
 
     Resurrect
@@ -90,7 +93,8 @@
     F('.waitfor').addClass('test_bad');
 
     //FLOJO.timed(-1);
-
+    //FLOJO.remove(120000);
+    F('.faded').fadeOut(5000)
     //
     function resurrect() {
       F('.resurrect').removeClass('test_good')
