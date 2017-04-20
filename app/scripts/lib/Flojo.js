@@ -147,7 +147,7 @@ var FLOJO = (function() {
   return {
 
     timed: function(when, myFunc, myParam) {
-      if(when < 0) { throw new Error("When needs to be positive")}
+      if(when < 0) { throw new Error("'when' needs to be positive for timed")}
 
       var task = new Task(
         getNewTaskId(),               //ID
@@ -165,15 +165,15 @@ var FLOJO = (function() {
       return task.id;
     },
     after: function(id, when, myFunc, myParam) {
-      if(when < 0) { throw new Error("When needs to be positive")}
+      if(when < 0) { throw new Error("'when' needs to be positive for after")}
 
       var task = new Task(
         getNewTaskId(),
         1,
-        new Date().getTime(),            //start time
-        getTaskFromId(id).when + when,     //end time
-        myFunc,                 //function
-        myParam)                //parameter
+        new Date().getTime(),             //start time
+        getTaskFromId(id).when + when,    //end time
+        myFunc,                           //function
+        myParam)                          //parameter
 
       tasks.push(task);
       
@@ -185,18 +185,18 @@ var FLOJO = (function() {
     // },
 
     counted: function(when, count, myFunc, myParam) {
-      if(when < 0) { throw new Error("When needs to be positive")}
-      if(count < 0) { throw new Error("Count needs to be positive")}
+      if(when < 0) { throw new Error("'when' needs to be positive for counted")}
+      if(count < 0) { throw new Error("'count' needs to be positive")}
 
       var task = new Counted(
-          getNewTaskId(),         //ID
-          2,                      //type
-          when,                   //when
-          new Date().getTime(),            //start time
-          new Date().getTime() + when,     //end time
+          getNewTaskId(),                 //ID
+          2,                              //type
+          when,                           //when
+          new Date().getTime(),           //start time
+          new Date().getTime() + when,    //end time
           count,
-          myFunc,                 //function
-          myParam)                //parameter
+          myFunc,                         //function
+          myParam)                        //parameter
 
       tasks.push(task);
 
@@ -207,22 +207,22 @@ var FLOJO = (function() {
     },
 
     infinite: function(when, myFunc, myParam) {
-      if(when < 0) { throw new Error("When needs to be positive")}
+      if(when < 0) { throw new Error("'when' needs to be positive for infinite")}
       
       var task = new Infinite(
-          getNewTaskId(),         //ID
-          3,                      //type
-          when,                   //when   
-          new Date().getTime(),            //start time
-          new Date().getTime() + when,     //end time
-          myFunc,                 //function
-          myParam)                //parameter
+          getNewTaskId(),                 //ID
+          3,                              //type
+          when,                           //when   
+          new Date().getTime(),           //start time
+          new Date().getTime() + when,    //end time
+          myFunc,                         //function
+          myParam)                        //parameter
 
       tasks.push(task);
       
       if(_debug) console.log("added Infinite: " + w + " f: " + f);
 
-      return this;
+      return task.id;
     },
     remove: function (id) {
       if(_debug) console.log("Killing task " + id)
@@ -230,8 +230,10 @@ var FLOJO = (function() {
       if(dead == false){
         throw new Error("task id: " + id + " cannot be found");
       }
-
     },
+    //removeAll
+    //pause
+    //stop
     waitFor: function(obj, prop, value, myFunc) {
       var f = myFunc;
       //console.log("wait for " + obj + " = " + value )
@@ -240,7 +242,6 @@ var FLOJO = (function() {
           //console.log("is " + value)
           f();
         }
-
         //then remove function
       })
     }
