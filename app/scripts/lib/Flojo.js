@@ -5,6 +5,10 @@
 
 var FLOJO = (function() {
 
+  const TYPE_TIMED = 1;
+  const TYPE_COUNTED = 2;
+  const TYPE_INFINITE = 3;
+
   //Class Definitions
 
   class Task {
@@ -83,12 +87,12 @@ var FLOJO = (function() {
 
             switch(task.type)
             {
-              case 1:     //timed
+              case TYPE_TIMED:      //timed
 
                 tasks[index] = null;
                 break;
               
-              case 2:     //count
+              case TYPE_COUNTED:     //count
               
                 task.count--;
                 if(task.count > 0) {
@@ -100,7 +104,7 @@ var FLOJO = (function() {
                 }
                 break;
               
-              case 3:     //infinite
+              case TYPE_INFINITE:   //infinite
               
                 var newT = new Date().getTime() + task.interval;
                 task.when = getNewWhen(task.interval);
@@ -151,7 +155,7 @@ var FLOJO = (function() {
 
       var task = new Task(
         getNewTaskId(),               //ID
-        1,                            //type
+        TYPE_TIMED,                   //type
         new Date().getTime(),         //start time
         new Date().getTime() + when,  //end time
         myFunc,                       //function
@@ -169,7 +173,7 @@ var FLOJO = (function() {
 
       var task = new Task(
         getNewTaskId(),
-        1,
+        TYPE_TIMED,
         new Date().getTime(),             //start time
         getTaskFromId(id).when + when,    //end time
         myFunc,                           //function
@@ -190,7 +194,7 @@ var FLOJO = (function() {
 
       var task = new Counted(
           getNewTaskId(),                 //ID
-          2,                              //type
+          TYPE_COUNTED,                   //type
           when,                           //when
           new Date().getTime(),           //start time
           new Date().getTime() + when,    //end time
@@ -211,7 +215,7 @@ var FLOJO = (function() {
       
       var task = new Infinite(
           getNewTaskId(),                 //ID
-          3,                              //type
+          TYPE_INFINITE,                              //type
           when,                           //when   
           new Date().getTime(),           //start time
           new Date().getTime() + when,    //end time
