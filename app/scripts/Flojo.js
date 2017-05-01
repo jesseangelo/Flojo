@@ -260,10 +260,13 @@ var F = function(arg) {
   var getEls = function(arg) {
     //console.log('what: ' + arg.indexOf('#'))
 
+    //need to be able to mix and match these
     if(arg.indexOf('#') != -1) {
       return [document.getElementById(arg.substr(1))]
-    } else {
+    } else if(arg.indexOf('.') != -1) {{
       return document.querySelectorAll(arg) 
+    } else {
+      return document.getElementsByTagName(arg);
     }
   }
 

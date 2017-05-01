@@ -24,8 +24,10 @@
         margin-bottom: 2em;
         padding: 1em;
       }
+      figure, .child_class { height: 100%; }
       .test_good { background-color: green; }
       .test_bad { background-color: red; }
+
     </style>
   </head>
   <body>
@@ -44,6 +46,15 @@
     
     Class
     <section class='example test_class'></section>
+
+    Multi-Class
+    <section class='example multi_class'></section>
+
+    Child Class
+    <section class='example'><div class="child_class"></div></section>
+
+    Tag 
+    <section class='example tag-name'><figure></figure></section>
 
     Timed
     <section class='example timed'></section>
@@ -72,7 +83,10 @@
     <script>
 
     F('#test_id').addClass('test_bad');
-    F('.test_class').addClass('test_bad'); 
+    F('.test_class').addClass('test_bad');
+    F('.multi_class').addClass('test_bad');
+    F('.child_class').addClass('test_bad');
+    F('figure').addClass('test_bad'); 
     F('.timed').addClass('test_bad');
     F('.counted').addClass('test_bad');
     F('.after').addClass('test_bad');
@@ -97,9 +111,16 @@
     FLOJO.timed(1000, function() {
       F("#test_id").removeClass('test_bad');
       F(".test_class").removeClass('test_bad');
-      F("#test_id").addClass('test_good');
-      F(".test_class").addClass('test_good');
+      F(".example.multi_class").removeClass('test_bad');
+      F(".example .child_class").removeClass('test_bad');
+      F('figure').removeClass('test_bad');
 
+      F("#test_id").addClass('test_good');
+      F(".test_class").addClass('test_good'); 
+      F(".example.multi_class").addClass('test_good');
+      F(".example .child_class").addClass('test_good');
+      F("figure").addClass('test_good');
+      
       var el = document.querySelector('.test_class')
       el.innerHTML = 'F(.class)';
       var el = document.getElementById('test_id')
