@@ -263,7 +263,7 @@ var F = function(arg) {
     //need to be able to mix and match these
     if(arg.indexOf('#') != -1) {
       return [document.getElementById(arg.substr(1))]
-    } else if(arg.indexOf('.') != -1) {{
+    } else if(arg.indexOf('.') != -1) {
       return document.querySelectorAll(arg) 
     } else {
       return document.getElementsByTagName(arg);
@@ -273,21 +273,27 @@ var F = function(arg) {
   return {
     addClass: function(c){ 
       var els = getEls(arg)
-      els.forEach(function(element) {
+      //els.forEach(function(element) {
+      for(var k = 0; k < els.length; k++) {
+        var element = els[k];
         if (element.classList) 
           element.classList.add(c);
         else
           element.className += ' ' + c;
-      });
+      }
+      //});
     },
     removeClass: function(c) {
       var els = getEls(arg)
-      els.forEach(function(element) {
+      //els.forEach(function(element) {
+      for(var k = 0; k < els.length; k++) {
+        var element = els[k];
         if (element.classList)
           element.classList.remove(c);
         else
           element.classList = element.classList.replace(new RegExp('(^|\\b)' + c.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
-      });
+      //});
+      }
     },
     hide: function() {
       el.style.display = 'none';
@@ -317,12 +323,12 @@ var F = function(arg) {
 
       //this still needs work for sure
       for(var k = 0; k < loops; k++) {
-        FLOJO.timed(k * 60, function(){
-          console.log(k/loops)
-          els.forEach(function(element) {
-            element.style.opacity = k/loops; 
-          });
-        })
+        FLOJO.timed(100, function(){
+          console.log('k ' +k/loops)
+          //els.forEach(function(element) {
+          //  element.style.opacity = k/loops; 
+          //});
+        });
       } 
     },
     fadeIn: function(time) {
