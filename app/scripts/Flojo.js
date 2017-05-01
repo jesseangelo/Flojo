@@ -5,6 +5,8 @@
 
 var FLOJO = (function() {
 
+  const _VERSION = 3.5;
+
   const TYPE_TIMED = 1;
   const TYPE_COUNTED = 2;
   const TYPE_INFINITE = 3;
@@ -323,9 +325,9 @@ var F = function(arg) {
     fadeIn: function(time) {
 
     }
-    
+    //to give programmtic control that which doesn't have it
     //color
-
+    //each
     //animate
     //randomNum?
   }
