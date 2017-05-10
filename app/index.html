@@ -7,16 +7,9 @@
     <title>FLOJO</title>
 
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
-    <!-- Place favicon.ico in the root directory -->
 
-    <!-- build:css styles/vendor.css -->
-    <!-- bower:css -->
-    <!-- endbower -->
-    <!-- endbuild -->
-
-    <!-- build:css styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
-    <!-- endbuild -->
+    
     <style>
       #box {
         height: 5em;
@@ -31,18 +24,37 @@
         margin-bottom: 2em;
         padding: 1em;
       }
+      figure, .child_class { height: 100%; }
       .test_good { background-color: green; }
       .test_bad { background-color: red; }
+
     </style>
   </head>
   <body>
     <h1>FLOJO</h1>
     <br>
+    Fade
+    <section class='example faded'></section>
+
+    <button onclick='resurrect()'>Resurrect</button>
+
+    Resurrect
+    <section class='example resurrect'></section>
+
     Id
     <section class='example' id="test_id"></section>
     
     Class
     <section class='example test_class'></section>
+
+    Multi-Class
+    <section class='example multi_class'></section>
+
+    Child Class
+    <section class='example'><div class="child_class"></div></section>
+
+    Tag 
+    <section class='example tag-name'><figure></figure></section>
 
     Timed
     <section class='example timed'></section>
@@ -65,31 +77,50 @@
     Animation test
     <div id="box"></div>
 
-    <!-- build:js scripts/vendor.js -->
-    <!-- bower:js -->
-    <!-- endbower -->
-    <!-- endbuild -->
+ 
+    <script src="scripts/Flojo.js"></script>
 
-    <!-- build:js scripts/main.js -->
-    <script src="scripts/lib/Flojo.js"></script>
-    <script src="scripts/main.js"></script>
-    <!-- endbuild -->
     <script>
 
     F('#test_id').addClass('test_bad');
-    F('.test_class').addClass('test_bad'); 
+    F('.test_class').addClass('test_bad');
+    F('.multi_class').addClass('test_bad');
+    F('.child_class').addClass('test_bad');
+    F('figure').addClass('test_bad'); 
     F('.timed').addClass('test_bad');
     F('.counted').addClass('test_bad');
     F('.after').addClass('test_bad');
     F('.infinite').addClass('test_bad');
     F('.waitfor').addClass('test_bad');
 
+    //FLOJO.timed(-1);
+    //FLOJO.remove(120000);
+    F('.faded').fadeOut(5000)
+    //
+    function resurrect() {
+      F('.resurrect').removeClass('test_good')
+      F('.resurrect').addClass('test_bad');
+
+      FLOJO.timed(2000, function() {
+        F('.resurrect').removeClass('test_bad')
+        F('.resurrect').addClass('test_good');
+
+      });
+    }
+
     FLOJO.timed(1000, function() {
       F("#test_id").removeClass('test_bad');
       F(".test_class").removeClass('test_bad');
-      F("#test_id").addClass('test_good');
-      F(".test_class").addClass('test_good');
+      F(".example.multi_class").removeClass('test_bad');
+      F(".example .child_class").removeClass('test_bad');
+      F('figure').removeClass('test_bad');
 
+      F("#test_id").addClass('test_good');
+      F(".test_class").addClass('test_good'); 
+      F(".example.multi_class").addClass('test_good');
+      F(".example .child_class").addClass('test_good');
+      F("figure").addClass('test_good');
+      
       var el = document.querySelector('.test_class')
       el.innerHTML = 'F(.class)';
       var el = document.getElementById('test_id')
@@ -106,12 +137,12 @@
     });
 
 
-    var testAfter = FLOJO.timed(1000, function() {
+    var testAfter = FLOJO.timed(5000, function() {
       var el = document.querySelector('.after')
-      el.innerHTML = 'first test done, waiting..';
+      el.innerHTML = 'first test done, waiting..5000';
     });
     //console.log("id is: " + testAfter)
-    FLOJO.after(testAfter, 5000, function() {
+    FLOJO.after(testAfter, 1000, function() {
       F('.after').removeClass('test_bad');
       F('.after').addClass('test_good');
       var el = document.querySelector('.after')
