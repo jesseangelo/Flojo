@@ -144,7 +144,8 @@ var FLOJO = (function() {
       },
       getTaskFromId = function(id) {
         return tasks.find(function(t) {
-          return t.id == id;
+          if(t != null)
+            return t.id == id;
         });
       }
       /// PUBLIC FUNCTIONS
@@ -173,11 +174,18 @@ var FLOJO = (function() {
     after: function(id, when, myFunc, myParam) {
       if(when < 0) { throw new Error("'when' needs to be positive for after")}
 
+      var myWhen;
+      if(getTaskFromId(id) != null) {
+        myWhen = getTaskFromId(id).when + when;
+      } else {
+        myWhen = new Date().getTime() + when;
+      }
+
       var task = new Task(
         getNewTaskId(),
         TYPE_TIMED,
         new Date().getTime(),             //start time
-        getTaskFromId(id).when + when,    //end time
+        myWhen,                           //end time
         myFunc,                           //function
         myParam)                          //parameter
 
