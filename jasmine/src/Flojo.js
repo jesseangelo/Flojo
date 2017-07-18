@@ -10,6 +10,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var FLOJO = function () {
 
+  var _VERSION = 3.5;
+
+  var TYPE_TIMED = 1;
+  var TYPE_COUNTED = 2;
+  var TYPE_INFINITE = 3;
+
   //Class Definitions
 
   var Task = function Task(id, type, start, when, func, param) {
@@ -72,55 +78,65 @@ var FLOJO = function () {
   },
       init = function init() {
     if (intervalID === null) {
-      intervalID = window.setInterval(update, 10);
+      intervalID = requestAnimationFrame(update);
       isRunning = true;
     }
   },
       update = function update() {
+
     findTime();
+
     cleanList();
-    if (tasks.length == 0) {
-      clearInterval(intervalID);
+
+    if (tasks.length) {
+      requestAnimationFrame(update);
+    } else {
       intervalID = null;
+      currentTaskId = 0;
     }
   },
       getNewWhen = function getNewWhen(interval) {
-    var d = new Date();
-    return d.getTime() + interval;
+    return new Date().getTime() + interval;
   },
       findTime = function findTime() {
-    var d = new Date();
-    var myT = d.getTime();
 
     tasks.forEach(function (task, index) {
+
       if (task == null) return;
-      var myW = task.when;
-      if (myW - myT < 0) {
+
+      if (task.when - new Date().getTime() < 0) {
         task.func(task.param);
 
         switch (task.type) {
-          case 1:
+          case TYPE_TIMED:
             //timed
+
             tasks[index] = null;
             break;
-          case 2:
+
+          case TYPE_COUNTED:
             //count
+
             task.count--;
             if (task.count > 0) {
-              var newT = myT + task.interval;
+              var newT = new Date().getTime() + task.interval;
               //if(_debug) console.log(newT);
               task.when = getNewWhen(task.interval);
             } else {
               tasks[index] = null;
             }
             break;
-          case 3:
+
+          case TYPE_INFINITE:
             //infinite
-            var newT = myT + task.interval;
+
+            var newT = new Date().getTime() + task.interval;
             task.when = getNewWhen(task.interval);
             break;
+
           default:
             break;
+
         }
       }
     });
@@ -135,14 +151,18 @@ var FLOJO = function () {
     tasks = newArray;
   },
       kill = function kill(id) {
+    if (tasks.length == 0) {
+      return false;
+    }
+
     tasks.forEach(function (task, index) {
       if (task != null) {
-        var myId = task.id;
-        if (myId == id) {
+        if (task.id == id) {
           tasks[index] = null;
           if (_debug) {
             console.log('task killed: ' + id);
           }
+          return true;
         }
       }
     });
@@ -151,7 +171,7 @@ var FLOJO = function () {
   },
       getTaskFromId = function getTaskFromId(id) {
     return tasks.find(function (t) {
-      return t.id == id;
+      if (t != null) return t.id == id;
     });
   };
   /// PUBLIC FUNCTIONS
@@ -160,16 +180,14 @@ var FLOJO = function () {
   return {
 
     timed: function timed(when, myFunc, myParam) {
-      var d = new Date();
-
       if (when < 0) {
-        throw new Error("When needs to be positive");
+        throw new Error("'when' needs to be positive for timed");
       }
 
       var task = new Task(getNewTaskId(), //ID
-      1, //type
-      d.getTime(), //start time
-      d.getTime() + when, //end time
+      TYPE_TIMED, //type
+      new Date().getTime(), //start time
+      new Date().getTime() + when, //end time
       myFunc, //function
       myParam); //parameter
 
@@ -181,11 +199,19 @@ var FLOJO = function () {
       return task.id;
     },
     after: function after(id, when, myFunc, myParam) {
-      //console.log(id)
-      var d = new Date();
+      if (when < 0) {
+        throw new Error("'when' needs to be positive for after");
+      }
 
-      var task = new Task(getNewTaskId(), 1, d.getTime(), //start time
-      d.getTime() + when, //end time
+      var myWhen;
+      if (getTaskFromId(id) != null) {
+        myWhen = getTaskFromId(id).when + when;
+      } else {
+        myWhen = new Date().getTime() + when;
+      }
+
+      var task = new Task(getNewTaskId(), TYPE_TIMED, new Date().getTime(), //start time
+      myWhen, //end time
       myFunc, //function
       myParam); //parameter
 
@@ -199,14 +225,18 @@ var FLOJO = function () {
     // },
 
     counted: function counted(when, count, myFunc, myParam) {
-      //error checking for values
-      var d = new Date();
+      if (when < 0) {
+        throw new Error("'when' needs to be positive for counted");
+      }
+      if (count < 0) {
+        throw new Error("'count' needs to be positive");
+      }
 
       var task = new Counted(getNewTaskId(), //ID
-      2, //type
+      TYPE_COUNTED, //type
       when, //when
-      d.getTime(), //start time
-      d.getTime() + when, //end time
+      new Date().getTime(), //start time
+      new Date().getTime() + when, //end time
       count, myFunc, //function
       myParam); //parameter
 
@@ -218,13 +248,15 @@ var FLOJO = function () {
     },
 
     infinite: function infinite(when, myFunc, myParam) {
-      var d = new Date();
+      if (when < 0) {
+        throw new Error("'when' needs to be positive for infinite");
+      }
 
       var task = new Infinite(getNewTaskId(), //ID
-      3, //type
+      TYPE_INFINITE, //type
       when, //when   
-      d.getTime(), //start time
-      d.getTime() + when, //end time
+      new Date().getTime(), //start time
+      new Date().getTime() + when, //end time
       myFunc, //function
       myParam); //parameter
 
@@ -232,12 +264,18 @@ var FLOJO = function () {
 
       if (_debug) console.log("added Infinite: " + w + " f: " + f);
 
-      return this;
+      return task.id;
     },
     remove: function remove(id) {
       if (_debug) console.log("Killing task " + id);
-      kill(id);
+      var dead = kill(id);
+      if (dead == false) {
+        throw new Error("task id: " + id + " cannot be found");
+      }
     },
+    //removeAll
+    //pause
+    //stop
     waitFor: function waitFor(obj, prop, value, myFunc) {
       var f = myFunc;
       //console.log("wait for " + obj + " = " + value )
@@ -246,7 +284,6 @@ var FLOJO = function () {
           //console.log("is " + value)
           f();
         }
-
         //then remove function
       });
     }
@@ -259,25 +296,34 @@ var F = function F(arg) {
   var getEls = function getEls(arg) {
     //console.log('what: ' + arg.indexOf('#'))
 
+    //need to be able to mix and match these
     if (arg.indexOf('#') != -1) {
       return [document.getElementById(arg.substr(1))];
-    } else {
+    } else if (arg.indexOf('.') != -1) {
       return document.querySelectorAll(arg);
+    } else {
+      return document.getElementsByTagName(arg);
     }
   };
 
   return {
     addClass: function addClass(c) {
       var els = getEls(arg);
-      els.forEach(function (element) {
+      //els.forEach(function(element) {
+      for (var k = 0; k < els.length; k++) {
+        var element = els[k];
         if (element.classList) element.classList.add(c);else element.className += ' ' + c;
-      });
+      }
+      //});
     },
     removeClass: function removeClass(c) {
       var els = getEls(arg);
-      els.forEach(function (element) {
+      //els.forEach(function(element) {
+      for (var k = 0; k < els.length; k++) {
+        var element = els[k];
         if (element.classList) element.classList.remove(c);else element.classList = element.classList.replace(new RegExp('(^|\\b)' + c.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
-      });
+        //});
+      }
     },
     hide: function hide() {
       el.style.display = 'none';
@@ -288,18 +334,34 @@ var F = function F(arg) {
     remove: function remove() {
       el.parentNode.removeChild(el);
     },
+    hasClass: function hasClass(c) {
+      if (el.classList) el.classList.contains(c);else new RegExp('(^| )' + c + '( |$)', 'gi').test(el.c);
+    },
+
     opacity: function opacity(o) {
       var els = getEls(arg);
       els.forEach(function (element) {
-
         element.style.opacity = o;
       });
     },
-    hasClass: function hasClass(c) {
-      if (el.classList) el.classList.contains(c);else new RegExp('(^| )' + c + '( |$)', 'gi').test(el.c);
-    }
-    /*
-    */
+    fadeOut: function fadeOut(time) {
+      var els = getEls(arg);
+      var loops = Math.round(time / 60);
+
+      //this still needs work for sure
+      for (var k = 0; k < loops; k++) {
+        FLOJO.timed(100, function () {
+          console.log('k ' + k / loops);
+          //els.forEach(function(element) {
+          //  element.style.opacity = k/loops; 
+          //});
+        });
+      }
+    },
+    fadeIn: function fadeIn(time) {}
+    //to give programmtic control that which doesn't have it
+    //color
+    //each
     //animate
     //randomNum?
   };
