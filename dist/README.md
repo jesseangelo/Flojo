@@ -75,3 +75,21 @@ var k = FLOJO.infinite(3500, function() {
 
 FLOJO.remove(k);
 ```
+
+## F()
+F() is a helper to provide some commonly used functionality to make your tasks more powerful. It's based on the parts of jQuery used most often for visually manipulating the UI.
+
+### F('#id')
+### F('.class')
+### .hide()
+### .show()
+### .remove()
+### .addClass()
+### .removeClass()
+### .hasClass()
+
+
+
+
+
+

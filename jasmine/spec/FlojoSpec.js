@@ -29,7 +29,7 @@ describe("Flojo", function() {
     	var testAfter = FLOJO.timed(100, function() {
 	      a++;
 	    });
-	    FLOJO.after(testAfter, 2000, function() {
+	    FLOJO.after(testAfter, 200, function() {
 	      a++;
 	      after();
 	    });
