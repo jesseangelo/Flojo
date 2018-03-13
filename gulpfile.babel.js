@@ -115,7 +115,7 @@ gulp.task('serve:test', ['scripts'], () => {
     port: 9000,
     ui: false,
     server: {
-      baseDir: 'test',
+      baseDir: 'jasmine',
       routes: {
         '/scripts': '.tmp/scripts',
         '/node_modules': 'node_modules'
