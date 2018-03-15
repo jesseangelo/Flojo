@@ -260,42 +260,44 @@ var FLOJO = (function() {
 
 //F functions
 var F = function(arg) {
-
-  var getEls = function(arg) {
+  var el,
+  getEls = function(arg) {
     //console.log('what: ' + arg.indexOf('#'))
 
     //need to be able to mix and match these
-    if(arg.indexOf('#') != -1) {
-      return [document.getElementById(arg.substr(1))]
-    } else if(arg.indexOf('.') != -1) {
-      return document.querySelectorAll(arg) 
+    if(arg.indexOf('#') !== -1) {
+      return [document.getElementById(arg.substr(1))];
+    } else if(arg.indexOf('.') !== -1) {
+      return document.querySelectorAll(arg);
     } else {
       return document.getElementsByTagName(arg);
     }
-  }
+  };
 
   return {
-    addClass: function(c){ 
-      var els = getEls(arg)
+    addClass: function(c) {
+      var els = getEls(arg);
       //els.forEach(function(element) {
       for(var k = 0; k < els.length; k++) {
         var element = els[k];
-        if (element.classList) 
+        if (element.classList) {
           element.classList.add(c);
-        else
+        } else {
           element.className += ' ' + c;
+        }
       }
       //});
     },
     removeClass: function(c) {
-      var els = getEls(arg)
+      var els = getEls(arg);
       //els.forEach(function(element) {
       for(var k = 0; k < els.length; k++) {
         var element = els[k];
-        if (element.classList)
+        if (element.classList) {
           element.classList.remove(c);
-        else
+        } else {
           element.classList = element.classList.replace(new RegExp('(^|\\b)' + c.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+        }
       //});
       }
     },
@@ -329,7 +331,7 @@ var F = function(arg) {
       //this still needs work for sure
       for(var k = 0; k < loops; k++) {
         FLOJO.timed(100, function(){
-          console.log('k ' + (k/loops));
+          console.log('k ' + (k / loops));
           //els.forEach(function(element) {
           //  element.style.opacity = k/loops;
           //});
@@ -337,7 +339,7 @@ var F = function(arg) {
       }
     },
     fadeIn: function(time) {
-
+      let t = time;
     }
     //to give programmtic control that which doesn't have it
     //color

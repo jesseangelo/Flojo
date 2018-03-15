@@ -38,5 +38,8 @@
         "single"
       ]
     }
+  },
+  "dependencies": {
+    "jasmine": "^3.1.0"
   }
 }

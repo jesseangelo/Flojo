@@ -1,6 +1,6 @@
 // FLOJO
 // pronounced 'flo-ho'
-"use strict";
+'use strict';
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
@@ -10,7 +10,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var FLOJO = function () {
 
-  var _VERSION = 3.5;
+  var APP_VERSION = 4.0;
 
   var TYPE_TIMED = 1;
   var TYPE_COUNTED = 2;
@@ -71,28 +71,10 @@ var FLOJO = function () {
       intervalID = null,
       _debug = false;
 
-  var getNewTaskId = function getNewTaskId() {
-    //console.log('currentTaskId: ' + currentTaskId)
-    init();
-    return currentTaskId++;
-  },
-      init = function init() {
+  var init = function init() {
     if (intervalID === null) {
       intervalID = requestAnimationFrame(update);
       isRunning = true;
-    }
-  },
-      update = function update() {
-
-    findTime();
-
-    cleanList();
-
-    if (tasks.length) {
-      requestAnimationFrame(update);
-    } else {
-      intervalID = null;
-      currentTaskId = 0;
     }
   },
       getNewWhen = function getNewWhen(interval) {
@@ -102,7 +84,9 @@ var FLOJO = function () {
 
     tasks.forEach(function (task, index) {
 
-      if (task == null) return;
+      if (task === null) {
+        return;
+      }
 
       if (task.when - new Date().getTime() < 0) {
         task.func(task.param);
@@ -110,17 +94,13 @@ var FLOJO = function () {
         switch (task.type) {
           case TYPE_TIMED:
             //timed
-
             tasks[index] = null;
             break;
 
           case TYPE_COUNTED:
             //count
-
             task.count--;
             if (task.count > 0) {
-              var newT = new Date().getTime() + task.interval;
-              //if(_debug) console.log(newT);
               task.when = getNewWhen(task.interval);
             } else {
               tasks[index] = null;
@@ -129,8 +109,6 @@ var FLOJO = function () {
 
           case TYPE_INFINITE:
             //infinite
-
-            var newT = new Date().getTime() + task.interval;
             task.when = getNewWhen(task.interval);
             break;
 
@@ -151,13 +129,13 @@ var FLOJO = function () {
     tasks = newArray;
   },
       kill = function kill(id) {
-    if (tasks.length == 0) {
+    if (tasks.length === 0) {
       return false;
     }
 
     tasks.forEach(function (task, index) {
       if (task != null) {
-        if (task.id == id) {
+        if (task.id === id) {
           tasks[index] = null;
           if (_debug) {
             console.log('task killed: ' + id);
@@ -171,8 +149,29 @@ var FLOJO = function () {
   },
       getTaskFromId = function getTaskFromId(id) {
     return tasks.find(function (t) {
-      if (t != null) return t.id == id;
+      if (t != null) {
+        return t.id === id;
+      }
     });
+  },
+      update = function update() {
+
+    findTime();
+
+    cleanList();
+
+    if (tasks.length) {
+      requestAnimationFrame(update);
+    } else {
+      intervalID = null;
+      currentTaskId = 0;
+      isRunning = false;
+    }
+  },
+      getNewTaskId = function getNewTaskId() {
+    //console.log('currentTaskId: ' + currentTaskId)
+    init();
+    return currentTaskId++;
   };
   /// PUBLIC FUNCTIONS
 
@@ -181,7 +180,7 @@ var FLOJO = function () {
 
     timed: function timed(when, myFunc, myParam) {
       if (when < 0) {
-        throw new Error("'when' needs to be positive for timed");
+        throw new Error('"when" needs to be positive for timed');
       }
 
       var task = new Task(getNewTaskId(), //ID
@@ -193,14 +192,16 @@ var FLOJO = function () {
 
       tasks.push(task);
 
-      if (_debug) console.log("added: " + w + " f: " + f);
+      if (_debug) {
+        console.log('added timed: ' + when);
+      }
 
       //console.log('timed Id: ' + myId)
       return task.id;
     },
     after: function after(id, when, myFunc, myParam) {
       if (when < 0) {
-        throw new Error("'when' needs to be positive for after");
+        throw new Error('"when" needs to be positive for after');
       }
 
       var myWhen;
@@ -226,10 +227,10 @@ var FLOJO = function () {
 
     counted: function counted(when, count, myFunc, myParam) {
       if (when < 0) {
-        throw new Error("'when' needs to be positive for counted");
+        throw new Error('"when" needs to be positive for counted');
       }
       if (count < 0) {
-        throw new Error("'count' needs to be positive");
+        throw new Error('"count" needs to be positive');
       }
 
       var task = new Counted(getNewTaskId(), //ID
@@ -242,19 +243,21 @@ var FLOJO = function () {
 
       tasks.push(task);
 
-      if (_debug) console.log("added Counted: " + w + " f: " + f + " C: " + c);
+      if (_debug) {
+        console.log('added Counted: ' + when + ' f: ' + myFunc + ' C: ' + count);
+      }
 
       return task.id;
     },
 
     infinite: function infinite(when, myFunc, myParam) {
       if (when < 0) {
-        throw new Error("'when' needs to be positive for infinite");
+        throw new Error('"when" needs to be positive for infinite');
       }
 
       var task = new Infinite(getNewTaskId(), //ID
       TYPE_INFINITE, //type
-      when, //when   
+      when, //when
       new Date().getTime(), //start time
       new Date().getTime() + when, //end time
       myFunc, //function
@@ -262,44 +265,49 @@ var FLOJO = function () {
 
       tasks.push(task);
 
-      if (_debug) console.log("added Infinite: " + w + " f: " + f);
+      if (_debug) {
+        console.log('added Infinite: ' + when + ' f: ' + myFunc);
+      }
 
       return task.id;
     },
     remove: function remove(id) {
-      if (_debug) console.log("Killing task " + id);
+      if (_debug) {
+        console.log('Killing task ' + id);
+      }
       var dead = kill(id);
-      if (dead == false) {
-        throw new Error("task id: " + id + " cannot be found");
+      if (dead === false) {
+        throw new Error('task id: ' + id + ' cannot be found');
       }
     },
     //removeAll
     //pause
     //stop
+    //watchElement? MutationObserver
     waitFor: function waitFor(obj, prop, value, myFunc) {
       var f = myFunc;
       //console.log("wait for " + obj + " = " + value )
-      this.infinite(1000, function () {
-        if (obj[prop] == value) {
+      var k = FLOJO.infinite(1000, function () {
+        if (obj[prop] === value) {
           //console.log("is " + value)
           f();
+          FLOJO.remove(k);
         }
-        //then remove function
       });
     }
   };
 }(FLOJO || {});
 
-//P functions
+//F functions
 var F = function F(arg) {
-
-  var getEls = function getEls(arg) {
+  var el,
+      getEls = function getEls(arg) {
     //console.log('what: ' + arg.indexOf('#'))
 
     //need to be able to mix and match these
-    if (arg.indexOf('#') != -1) {
+    if (arg.indexOf('#') !== -1) {
       return [document.getElementById(arg.substr(1))];
-    } else if (arg.indexOf('.') != -1) {
+    } else if (arg.indexOf('.') !== -1) {
       return document.querySelectorAll(arg);
     } else {
       return document.getElementsByTagName(arg);
@@ -312,7 +320,11 @@ var F = function F(arg) {
       //els.forEach(function(element) {
       for (var k = 0; k < els.length; k++) {
         var element = els[k];
-        if (element.classList) element.classList.add(c);else element.className += ' ' + c;
+        if (element.classList) {
+          element.classList.add(c);
+        } else {
+          element.className += ' ' + c;
+        }
       }
       //});
     },
@@ -321,7 +333,11 @@ var F = function F(arg) {
       //els.forEach(function(element) {
       for (var k = 0; k < els.length; k++) {
         var element = els[k];
-        if (element.classList) element.classList.remove(c);else element.classList = element.classList.replace(new RegExp('(^|\\b)' + c.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+        if (element.classList) {
+          element.classList.remove(c);
+        } else {
+          element.classList = element.classList.replace(new RegExp('(^|\\b)' + c.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+        }
         //});
       }
     },
@@ -335,7 +351,11 @@ var F = function F(arg) {
       el.parentNode.removeChild(el);
     },
     hasClass: function hasClass(c) {
-      if (el.classList) el.classList.contains(c);else new RegExp('(^| )' + c + '( |$)', 'gi').test(el.c);
+      if (el.classList) {
+        el.classList.contains(c);
+      } else {
+        new RegExp('(^| )' + c + '( |$)', 'gi').test(el.c);
+      }
     },
 
     opacity: function opacity(o) {
@@ -353,12 +373,14 @@ var F = function F(arg) {
         FLOJO.timed(100, function () {
           console.log('k ' + k / loops);
           //els.forEach(function(element) {
-          //  element.style.opacity = k/loops; 
+          //  element.style.opacity = k/loops;
           //});
         });
       }
     },
-    fadeIn: function fadeIn(time) {}
+    fadeIn: function fadeIn(time) {
+      var t = time;
+    }
     //to give programmtic control that which doesn't have it
     //color
     //each
@@ -366,3 +388,4 @@ var F = function F(arg) {
     //randomNum?
   };
 };
+//# sourceMappingURL=Flojo.js.map
