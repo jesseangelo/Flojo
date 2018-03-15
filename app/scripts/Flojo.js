@@ -50,28 +50,10 @@ var FLOJO = (function() {
       intervalID = null,
       _debug = false;
 
-  var getNewTaskId = function() {
-        //console.log('currentTaskId: ' + currentTaskId)
-        init();
-        return currentTaskId++;
-      },
-      init = function() {
+  var init = function() {
         if(intervalID === null) {
           intervalID = requestAnimationFrame(update);
           isRunning = true;
-        }
-      },
-      update = function() {
-
-        findTime();
-
-        cleanList();
-
-        if(tasks.length) {
-          requestAnimationFrame(update);
-        } else {
-          intervalID = null;
-          currentTaskId = 0;
         }
       },
       getNewWhen = function(interval) {
@@ -81,7 +63,7 @@ var FLOJO = (function() {
 
         tasks.forEach(function(task, index) {
 
-          if(task == null) { return; }
+          if(task === null) { return; }
 
           if((task.when - new Date().getTime()) < 0)
           {
@@ -90,25 +72,19 @@ var FLOJO = (function() {
             switch(task.type)
             {
               case TYPE_TIMED:      //timed
-
                 tasks[index] = null;
                 break;
 
-              case TYPE_COUNTED:     //count
-
+              case TYPE_COUNTED:    //count
                 task.count--;
                 if(task.count > 0) {
-                  var newT = new Date().getTime() + task.interval;
-                  //if(_debug) console.log(newT);
                   task.when = getNewWhen(task.interval);
                 } else {
                   tasks[index] = null;
                 }
                 break;
-              
+
               case TYPE_INFINITE:   //infinite
-                //is newT used?
-                var newT = new Date().getTime() + task.interval;
                 task.when = getNewWhen(task.interval);
                 break;
 
@@ -148,14 +124,32 @@ var FLOJO = (function() {
             return t.id === id;
           }
         });
-      }
+      },
+      update = function() {
+
+        findTime();
+
+        cleanList();
+
+        if(tasks.length) {
+          requestAnimationFrame(update);
+        } else {
+          intervalID = null;
+          currentTaskId = 0;
+        }
+      },
+      getNewTaskId = function() {
+        //console.log('currentTaskId: ' + currentTaskId)
+        init();
+        return currentTaskId++;
+      };
       /// PUBLIC FUNCTIONS
 
   //Public
   return {
 
     timed: function(when, myFunc, myParam) {
-      if(when < 0) { throw new Error('"when" needs to be positive for timed');}
+      if(when < 0) { throw new Error('"when" needs to be positive for timed'); }
 
       var task = new Task(
         getNewTaskId(),               //ID
@@ -163,17 +157,17 @@ var FLOJO = (function() {
         new Date().getTime(),         //start time
         new Date().getTime() + when,  //end time
         myFunc,                       //function
-        myParam)                      //parameter
+        myParam);                     //parameter
 
       tasks.push(task);
 
-      if(_debug) console.log('added: ' + w + ' f: ' + f);
+      if(_debug) { console.log('added timed: ' + when); }
 
       //console.log('timed Id: ' + myId)
       return task.id;
     },
     after: function(id, when, myFunc, myParam) {
-      if(when < 0) { throw new Error('"when" needs to be positive for after');}
+      if(when < 0) { throw new Error('"when" needs to be positive for after'); }
 
       var myWhen;
       if(getTaskFromId(id) != null) {
@@ -188,7 +182,7 @@ var FLOJO = (function() {
         new Date().getTime(),             //start time
         myWhen,                           //end time
         myFunc,                           //function
-        myParam)                          //parameter
+        myParam);                         //parameter
 
       tasks.push(task);
 
@@ -200,8 +194,8 @@ var FLOJO = (function() {
     // },
 
     counted: function(when, count, myFunc, myParam) {
-      if(when < 0) { throw new Error("'when' needs to be positive for counted")}
-      if(count < 0) { throw new Error("'count' needs to be positive")}
+      if(when < 0) { throw new Error('"when" needs to be positive for counted'); }
+      if(count < 0) { throw new Error('"count" needs to be positive'); }
 
       var task = new Counted(
           getNewTaskId(),                 //ID
@@ -211,38 +205,38 @@ var FLOJO = (function() {
           new Date().getTime() + when,    //end time
           count,
           myFunc,                         //function
-          myParam)                        //parameter
+          myParam);                       //parameter
 
       tasks.push(task);
 
-      if(_debug) console.log("added Counted: " + w + " f: " + f + " C: " + c);
+      if(_debug) { console.log('added Counted: ' + when + ' f: ' + myFunc + ' C: ' + count); }
 
       return task.id;
     },
 
     infinite: function(when, myFunc, myParam) {
-      if(when < 0) { throw new Error("'when' needs to be positive for infinite")}
+      if(when < 0) { throw new Error('"when" needs to be positive for infinite'); }
 
       var task = new Infinite(
           getNewTaskId(),                 //ID
-          TYPE_INFINITE,                              //type
-          when,                           //when   
+          TYPE_INFINITE,                  //type
+          when,                           //when
           new Date().getTime(),           //start time
           new Date().getTime() + when,    //end time
           myFunc,                         //function
-          myParam)                        //parameter
+          myParam);                       //parameter
 
       tasks.push(task);
 
-      if(_debug) console.log("added Infinite: " + w + " f: " + f);
+      if(_debug) { console.log('added Infinite: ' + when + ' f: ' + myFunc); }
 
       return task.id;
     },
     remove: function (id) {
-      if(_debug) console.log("Killing task " + id)
+      if(_debug) { console.log('Killing task ' + id); }
       var dead = kill(id);
-      if(dead == false){
-        throw new Error("task id: " + id + " cannot be found");
+      if(dead === false){
+        throw new Error('task id: ' + id + ' cannot be found');
       }
     },
     //removeAll
@@ -252,14 +246,14 @@ var FLOJO = (function() {
       var f = myFunc;
       //console.log("wait for " + obj + " = " + value )
       this.infinite(1000, function() {
-        if(obj[prop] == value) {
+        if(obj[prop] === value) {
           //console.log("is " + value)
           f();
         }
         //then remove function
-      })
+      });
     }
-  }
+  };
 }(FLOJO || {}));
 
 //F functions
