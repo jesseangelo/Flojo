@@ -1,11 +1,11 @@
 // FLOJO
 // pronounced 'flo-ho'
-"use strict";
+'use strict';
 
 
 var FLOJO = (function() {
 
-  const _VERSION = 3.5;
+  const APP_VERSION = 4.0;
 
   const TYPE_TIMED = 1;
   const TYPE_COUNTED = 2;
@@ -42,7 +42,7 @@ var FLOJO = (function() {
   //Private variables and methods
 
   var tasks = [],
-      
+
       currentTaskId = 0,
 
       //tracking
@@ -66,9 +66,9 @@ var FLOJO = (function() {
         findTime();
 
         cleanList();
-        
+
         if(tasks.length) {
-          requestAnimationFrame(update)
+          requestAnimationFrame(update);
         } else {
           intervalID = null;
           currentTaskId = 0;
@@ -80,9 +80,9 @@ var FLOJO = (function() {
       findTime = function() {
 
         tasks.forEach(function(task, index) {
-          
-          if(task == null) return;
-          
+
+          if(task == null) { return; }
+
           if((task.when - new Date().getTime()) < 0)
           {
             task.func(task.param);
@@ -93,9 +93,9 @@ var FLOJO = (function() {
 
                 tasks[index] = null;
                 break;
-              
+
               case TYPE_COUNTED:     //count
-              
+
                 task.count--;
                 if(task.count > 0) {
                   var newT = new Date().getTime() + task.interval;
@@ -107,12 +107,12 @@ var FLOJO = (function() {
                 break;
               
               case TYPE_INFINITE:   //infinite
-              
+                //is newT used?
                 var newT = new Date().getTime() + task.interval;
                 task.when = getNewWhen(task.interval);
                 break;
-              
-              default: 
+
+              default:
                 break;
 
             }
@@ -127,25 +127,26 @@ var FLOJO = (function() {
         tasks = newArray;
       },
       kill = function(id) {
-        if(tasks.length == 0) { return false; }
+        if(tasks.length === 0) { return false; }
 
         tasks.forEach(function(task, index) {
           if(task != null) {
-            if(task.id == id)
+            if(task.id === id)
             {
               tasks[index] = null;
-              if(_debug) { console.log('task killed: ' + id) }
+              if(_debug) { console.log('task killed: ' + id); }
                 return true;
             }
           }
         });
-       
+
         cleanList();
       },
       getTaskFromId = function(id) {
         return tasks.find(function(t) {
-          if(t != null)
-            return t.id == id;
+          if(t != null) {
+            return t.id === id;
+          }
         });
       }
       /// PUBLIC FUNCTIONS
@@ -154,7 +155,7 @@ var FLOJO = (function() {
   return {
 
     timed: function(when, myFunc, myParam) {
-      if(when < 0) { throw new Error("'when' needs to be positive for timed")}
+      if(when < 0) { throw new Error('"when" needs to be positive for timed');}
 
       var task = new Task(
         getNewTaskId(),               //ID
@@ -166,13 +167,13 @@ var FLOJO = (function() {
 
       tasks.push(task);
 
-      if(_debug) console.log("added: " + w + " f: " + f);
+      if(_debug) console.log('added: ' + w + ' f: ' + f);
 
       //console.log('timed Id: ' + myId)
       return task.id;
     },
     after: function(id, when, myFunc, myParam) {
-      if(when < 0) { throw new Error("'when' needs to be positive for after")}
+      if(when < 0) { throw new Error('"when" needs to be positive for after');}
 
       var myWhen;
       if(getTaskFromId(id) != null) {
@@ -190,7 +191,7 @@ var FLOJO = (function() {
         myParam)                          //parameter
 
       tasks.push(task);
-      
+
       return task.id;
     },
     // then: function(w, f, p) {
@@ -214,15 +215,14 @@ var FLOJO = (function() {
 
       tasks.push(task);
 
-      
       if(_debug) console.log("added Counted: " + w + " f: " + f + " C: " + c);
-      
+
       return task.id;
     },
 
     infinite: function(when, myFunc, myParam) {
       if(when < 0) { throw new Error("'when' needs to be positive for infinite")}
-      
+
       var task = new Infinite(
           getNewTaskId(),                 //ID
           TYPE_INFINITE,                              //type
@@ -233,7 +233,7 @@ var FLOJO = (function() {
           myParam)                        //parameter
 
       tasks.push(task);
-      
+
       if(_debug) console.log("added Infinite: " + w + " f: " + f);
 
       return task.id;
@@ -262,7 +262,7 @@ var FLOJO = (function() {
   }
 }(FLOJO || {}));
 
-//P functions
+//F functions
 var F = function(arg) {
 
   var getEls = function(arg) {
@@ -313,31 +313,32 @@ var F = function(arg) {
       el.parentNode.removeChild(el);
     },
     hasClass: function(c) {
-      if (el.classList)
+      if (el.classList) {
         el.classList.contains(c);
-      else
+      } else {
         new RegExp('(^| )' + c + '( |$)', 'gi').test(el.c);
+      }
     },
 
     opacity: function(o) {
-      var els = getEls(arg)
+      var els = getEls(arg);
       els.forEach(function(element) {
-        element.style.opacity = o; 
+        element.style.opacity = o;
       });
     },
     fadeOut: function(time) {
-      var els = getEls(arg)
-      var loops = Math.round(time/60);
+      var els = getEls(arg);
+      var loops = Math.round(time / 60);
 
       //this still needs work for sure
       for(var k = 0; k < loops; k++) {
         FLOJO.timed(100, function(){
-          console.log('k ' +k/loops)
+          console.log('k ' + (k/loops));
           //els.forEach(function(element) {
-          //  element.style.opacity = k/loops; 
+          //  element.style.opacity = k/loops;
           //});
         });
-      } 
+      }
     },
     fadeIn: function(time) {
 
@@ -347,6 +348,6 @@ var F = function(arg) {
     //each
     //animate
     //randomNum?
-  }
+  };
 
 };
