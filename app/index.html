@@ -5,10 +5,6 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>FLOJO</title>
-
-    <link rel="apple-touch-icon" href="apple-touch-icon.png">
-
-    <link rel="stylesheet" href="styles/main.css">
     
     <style>
       body {
@@ -16,7 +12,6 @@
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         color: #333;
       }
-
       #box {
         height: 5em;
         width: 5em;
@@ -79,6 +74,9 @@
 
     Wait For
     <section class='example waitfor'></section>
+
+    Wait For2
+    <section class='example waitfor2'></section>
 
     Animation test
     <div id="box"></div>
@@ -201,8 +199,16 @@
       var el = document.querySelector('.waitfor')
       el.innerHTML = 'n.val == ' + n.val;
     })
-    FLOJO.timed(3000, function() {
-      n.val = 2;
+
+    FLOJO.waitFor(n, "val", 3, function() {
+      F('.waitfor2').removeClass('test_bad');
+      F('.waitfor2').addClass('test_good');
+      var el = document.querySelector('.waitfor2')
+      el.innerHTML = 'n.val == ' + n.val;
+    })
+
+    FLOJO.counted(3000, 2, function() {
+      n.val++;
     })
     
     //Box animation

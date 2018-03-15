@@ -50,16 +50,16 @@ var FLOJO = (function() {
       intervalID = null,
       _debug = false;
 
-  var init = function() {
+  var init = () => {
         if(intervalID === null) {
           intervalID = requestAnimationFrame(update);
           isRunning = true;
         }
       },
-      getNewWhen = function(interval) {
+      getNewWhen = (interval) => {
         return new Date().getTime() + interval;
       },
-      findTime = function() {
+      findTime = () => {
 
         tasks.forEach(function(task, index) {
 
@@ -95,14 +95,14 @@ var FLOJO = (function() {
           }
         });
       },
-      cleanList = function() {
+      cleanList = () => {
         var newArray = [];
         for(var q = 0; q < tasks.length; q++) {
           if(tasks[q] != null) { newArray.push(tasks[q]); }
         }
         tasks = newArray;
       },
-      kill = function(id) {
+      kill = (id) => {
         if(tasks.length === 0) { return false; }
 
         tasks.forEach(function(task, index) {
@@ -118,14 +118,14 @@ var FLOJO = (function() {
 
         cleanList();
       },
-      getTaskFromId = function(id) {
+      getTaskFromId = (id) => {
         return tasks.find(function(t) {
           if(t != null) {
             return t.id === id;
           }
         });
       },
-      update = function() {
+      update = () => {
 
         findTime();
 
@@ -136,6 +136,7 @@ var FLOJO = (function() {
         } else {
           intervalID = null;
           currentTaskId = 0;
+          isRunning = false;
         }
       },
       getNewTaskId = function() {
@@ -148,7 +149,7 @@ var FLOJO = (function() {
   //Public
   return {
 
-    timed: function(when, myFunc, myParam) {
+    timed: (when, myFunc, myParam) => {
       if(when < 0) { throw new Error('"when" needs to be positive for timed'); }
 
       var task = new Task(
@@ -166,7 +167,7 @@ var FLOJO = (function() {
       //console.log('timed Id: ' + myId)
       return task.id;
     },
-    after: function(id, when, myFunc, myParam) {
+    after: (id, when, myFunc, myParam) => {
       if(when < 0) { throw new Error('"when" needs to be positive for after'); }
 
       var myWhen;
@@ -193,7 +194,7 @@ var FLOJO = (function() {
     //   return this;
     // },
 
-    counted: function(when, count, myFunc, myParam) {
+    counted: (when, count, myFunc, myParam) => {
       if(when < 0) { throw new Error('"when" needs to be positive for counted'); }
       if(count < 0) { throw new Error('"count" needs to be positive'); }
 
@@ -214,7 +215,7 @@ var FLOJO = (function() {
       return task.id;
     },
 
-    infinite: function(when, myFunc, myParam) {
+    infinite: (when, myFunc, myParam) => {
       if(when < 0) { throw new Error('"when" needs to be positive for infinite'); }
 
       var task = new Infinite(
@@ -232,7 +233,7 @@ var FLOJO = (function() {
 
       return task.id;
     },
-    remove: function (id) {
+    remove: (id) => {
       if(_debug) { console.log('Killing task ' + id); }
       var dead = kill(id);
       if(dead === false){
@@ -242,15 +243,16 @@ var FLOJO = (function() {
     //removeAll
     //pause
     //stop
-    waitFor: function(obj, prop, value, myFunc) {
+    //watchElement? MutationObserver
+    waitFor: (obj, prop, value, myFunc) => {
       var f = myFunc;
       //console.log("wait for " + obj + " = " + value )
-      this.infinite(1000, function() {
+      var k = FLOJO.infinite(1000, function() {
         if(obj[prop] === value) {
           //console.log("is " + value)
           f();
+          FLOJO.remove(k);
         }
-        //then remove function
       });
     }
   };

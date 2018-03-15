@@ -19,11 +19,12 @@ Tasks can be run after one another with the after() function. This will run the 
 var taskId = FLOJO.timed(..)
 FLOJO.after(taskId, timeInMS, function())
 ```
-And finally, tasks can also be removed from the list. 
+And finally, tasks can also be removed from the list.
 ```
 FLOJO.remove(taskId)
 ```
 
+It's tiny too; under 4KB!
 
 ## Some examples
 ### timed(timeInMS, function)
