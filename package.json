@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/jesseangelo/Flojo#readme",
   "dependencies": {
+    "jest": "^23.6.0",
     "lodash": "^4.17.11",
     "webpack": "^4.26.0",
     "webpack-cli": "^3.1.2"

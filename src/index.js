@@ -3,46 +3,23 @@
 
 // Singleton Module
 import { yolo } from './yolo';
+import { Task, Counted, Infinite } from './types'
 
-yolo.hello();
+export const APP_VERSION = 4.0;
 
-// class Task {
-//   constructor(id, type, start, when, func, param) {
-//     this.id = id;
-//     this.type = type;
-//     this.start = start;
-//     this.when = when;
-//     this.func = func;
-//     this.param = param;
-//   }
-// }
+class FLOJO {
 
-// class Counted extends Task {
-//   constructor(id, type, interval, start, when, count, func, param) {
-//     super(id, type, start, when, func, param);
-//     this.interval = interval;
-//     this.count = count;
-//   }
-// }
+  constructor() {
 
-// class Infinite extends Task {
-//   constructor(id, type, interval, start, when, func, param) {
-//     super(id, type, start, when, func, param);
-//     this.interval = interval;
-//   }
-// }
+    const TYPE_TIMED = 1;
+    const TYPE_COUNTED = 2;
+    const TYPE_INFINITE = 3;
+    //yolo.hello();
+  }
 
-// class FLOJO {
+}
 
-//   constructor() {
-//     const APP_VERSION = 4.0;
-
-//     const TYPE_TIMED = 1;
-//     const TYPE_COUNTED = 2;
-//     const TYPE_INFINITE = 3;
-//   }
-
-//   //Class Definitions
+export let flojo = new FLOJO();
 
 //   //Private variables and methods
 
