@@ -2,24 +2,57 @@
 // pronounced 'flo-ho'
 
 // Singleton Module
-// import { yolo } from './yolo';
-// import { Task, Counted, Infinite } from './types'
-
+// https://stackoverflow.com/questions/32647215/declaring-static-constants-in-es6-classes
 export const APP_VERSION = 4.0;
 
 export class FLOJO {
 
-  constructor() {
+  //var APP_VERSION;
 
+  constructor() {
     const TYPE_TIMED = 1;
     const TYPE_COUNTED = 2;
     const TYPE_INFINITE = 3;
     //yolo.hello();
     console.log('flojo constructor ')
+    //private
+    this.tasks = [];
+    this.currentTaskId = 0;
+
+      //tracking
+    this.isRunning = false;
+    this.intervalID = null;
+    this._debug = false;
+    this.init();
   }
 
-  hi() {
+  static get APP_VERSION() {
+    return APP_VERSION
+  }
+
+  init() {
+    if(this.intervalID === null) {
+      this.intervalID = window.requestAnimationFrame(() => {
+        this.update()
+      });
+      this.isRunning = true;
+    }
+  }
+
+  update() {
     console.log("HEY NOW!")
+    // findTime();
+
+    // cleanList();
+    if(this.tasks.length) {
+      window.requestAnimationFrame(() => {
+        this.update()
+      });
+    } else {
+      this.intervalID = null;
+      this.currentTaskId = 0;
+      this.isRunning = false;
+    }
   }
 
 }
@@ -38,100 +71,100 @@ export let flojo = new FLOJO();
 //       _debug = false;
 
 //   init() {
-//         if(intervalID === null) {
-//           intervalID = requestAnimationFrame(update);
-//           isRunning = true;
-//         }
-//       },
-//       getNewWhen = (interval) => {
-//         return new Date().getTime() + interval;
-//       },
-//       findTime = () => {
+//     if(intervalID === null) {
+//       intervalID = requestAnimationFrame(update);
+//       isRunning = true;
+//     }
+//   },
+//   getNewWhen = (interval) => {
+//     return new Date().getTime() + interval;
+//   },
+//   findTime = () => {
 
-//         tasks.forEach(function(task, index) {
+//     tasks.forEach(function(task, index) {
 
-//           if(task === null) { return; }
+//       if(task === null) { return; }
 
-//           if((task.when - new Date().getTime()) < 0)
-//           {
-//             task.func(task.param);
+//       if((task.when - new Date().getTime()) < 0)
+//       {
+//         task.func(task.param);
 
-//             switch(task.type)
-//             {
-//               case TYPE_TIMED:      //timed
-//                 tasks[index] = null;
-//                 break;
+//         switch(task.type)
+//         {
+//           case TYPE_TIMED:      //timed
+//             tasks[index] = null;
+//             break;
 
-//               case TYPE_COUNTED:    //count
-//                 task.count--;
-//                 if(task.count > 0) {
-//                   task.when = getNewWhen(task.interval);
-//                 } else {
-//                   tasks[index] = null;
-//                 }
-//                 break;
-
-//               case TYPE_INFINITE:   //infinite
-//                 task.when = getNewWhen(task.interval);
-//                 break;
-
-//               default:
-//                 break;
-
-//             }
-//           }
-//         });
-//       },
-//       cleanList = () => {
-//         var newArray = [];
-//         for(var q = 0; q < tasks.length; q++) {
-//           if(tasks[q] != null) { newArray.push(tasks[q]); }
-//         }
-//         tasks = newArray;
-//       },
-//       kill = (id) => {
-//         if(tasks.length === 0) { return false; }
-
-//         tasks.forEach(function(task, index) {
-//           if(task != null) {
-//             if(task.id === id)
-//             {
+//           case TYPE_COUNTED:    //count
+//             task.count--;
+//             if(task.count > 0) {
+//               task.when = getNewWhen(task.interval);
+//             } else {
 //               tasks[index] = null;
-//               if(_debug) { console.log('task killed: ' + id); }
-//                 return true;
 //             }
-//           }
-//         });
+//             break;
 
-//         cleanList();
-//       },
-//       getTaskFromId = (id) => {
-//         return tasks.find(function(t) {
-//           if(t != null) {
-//             return t.id === id;
-//           }
-//         });
-//       },
-//       update = () => {
+//           case TYPE_INFINITE:   //infinite
+//             task.when = getNewWhen(task.interval);
+//             break;
 
-//         findTime();
+//           default:
+//             break;
 
-//         cleanList();
-
-//         if(tasks.length) {
-//           requestAnimationFrame(update);
-//         } else {
-//           intervalID = null;
-//           currentTaskId = 0;
-//           isRunning = false;
 //         }
-//       },
-//       getNewTaskId = function() {
-//         //console.log('currentTaskId: ' + currentTaskId)
-//         init();
-//         return currentTaskId++;
-//       };
-//       /// PUBLIC FUNCTIONS
+//       }
+//     });
+//   },
+//   cleanList = () => {
+//     var newArray = [];
+//     for(var q = 0; q < tasks.length; q++) {
+//       if(tasks[q] != null) { newArray.push(tasks[q]); }
+//     }
+//     tasks = newArray;
+//   },
+//   kill = (id) => {
+//     if(tasks.length === 0) { return false; }
+
+//     tasks.forEach(function(task, index) {
+//       if(task != null) {
+//         if(task.id === id)
+//         {
+//           tasks[index] = null;
+//           if(_debug) { console.log('task killed: ' + id); }
+//             return true;
+//         }
+//       }
+//     });
+
+//     cleanList();
+//   },
+//   getTaskFromId = (id) => {
+//     return tasks.find(function(t) {
+//       if(t != null) {
+//         return t.id === id;
+//       }
+//     });
+//   },
+//   update = () => {
+
+//     findTime();
+
+//     cleanList();
+
+//     if(tasks.length) {
+//       requestAnimationFrame(update);
+//     } else {
+//       intervalID = null;
+//       currentTaskId = 0;
+//       isRunning = false;
+//     }
+//   },
+//   getNewTaskId = function() {
+//     //console.log('currentTaskId: ' + currentTaskId)
+//     init();
+//     return currentTaskId++;
+//   };
+//   /// PUBLIC FUNCTIONS
 
 //   //Public
 //   return {
