@@ -2,12 +2,12 @@
 // pronounced 'flo-ho'
 
 // Singleton Module
-import { yolo } from './yolo';
-import { Task, Counted, Infinite } from './types'
+// import { yolo } from './yolo';
+// import { Task, Counted, Infinite } from './types'
 
 export const APP_VERSION = 4.0;
 
-class FLOJO {
+export class FLOJO {
 
   constructor() {
 
@@ -15,6 +15,11 @@ class FLOJO {
     const TYPE_COUNTED = 2;
     const TYPE_INFINITE = 3;
     //yolo.hello();
+    console.log('flojo constructor ')
+  }
+
+  hi() {
+    console.log("HEY NOW!")
   }
 
 }
