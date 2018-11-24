@@ -3,16 +3,19 @@
 
 // Singleton Module
 // https://stackoverflow.com/questions/32647215/declaring-static-constants-in-es6-classes
+import { Task } from './types.js';
+
 export const APP_VERSION = 4.0;
+export const TYPE_TIMED = 1;
+export const TYPE_COUNTED = 2;
+export const TYPE_INFINITE = 3;
 
 export class FLOJO {
 
   //var APP_VERSION;
 
   constructor() {
-    const TYPE_TIMED = 1;
-    const TYPE_COUNTED = 2;
-    const TYPE_INFINITE = 3;
+
     //yolo.hello();
     console.log('flojo constructor ')
     //private
@@ -40,10 +43,10 @@ export class FLOJO {
   }
 
   update() {
-    console.log("HEY NOW!")
-    // findTime();
+    //console.log("HEY NOW!")
+    this.findTime();
 
-    // cleanList();
+    this.cleanList();
     if(this.tasks.length) {
       window.requestAnimationFrame(() => {
         this.update()
@@ -55,115 +58,125 @@ export class FLOJO {
     }
   }
 
+  getNewWhen(interval) {
+    // new DATE might be problematic depending on browser
+    return new Date().getTime() + interval;
+  }
+
+  findTime() {
+
+    this.tasks.forEach(function(task, index) {
+
+      if(task === null) { return; }
+
+      if((task.when - new Date().getTime()) < 0)
+      {
+        task.func(task.param);
+
+        switch(task.type)
+        {
+          case 1:      //timed
+            console.log('fonud a timed')
+            flojo.tasks[index] = null;
+            //this.tasks[index] = null;
+            //console.log(this.tasks[index]);
+            break;
+
+          case 2:    //count
+            task.count--;
+            if(task.count > 0) {
+              task.when = getNewWhen(task.interval);
+            } else {
+              this.tasks[index] = null;
+            }
+            break;
+
+          case 3:   //infinite
+            task.when = getNewWhen(task.interval);
+            break;
+
+          default:
+            break;
+
+        }
+      }
+    });
+  }
+
+  cleanList() {
+    var newArray = [];
+    for(var q = 0; q < this.tasks.length; q++) {
+      if(this.tasks[q] != null) { newArray.push(this.tasks[q]); }
+    }
+    this.tasks = newArray;
+  }
+  kill(id) {
+    if(this.tasks.length === 0) { return false; }
+
+    this.tasks.forEach(function(task, index) {
+      if(task != null) {
+        if(task.id === id)
+        {
+          this.tasks[index] = null;
+          if(_debug) { console.log('task killed: ' + id); }
+            return true;
+        }
+      }
+    });
+
+    cleanList();
+  }
+
+  getTaskFromId(id) {
+    return this.tasks.find(function(t) {
+      if(t != null) {
+        return t.id === id;
+      }
+    });
+  }
+    //   update = () => {
+
+    //     findTime();
+
+    //     cleanList();
+
+    //     if(tasks.length) {
+    //       requestAnimationFrame(update);
+    //     } else {
+    //       intervalID = null;
+    //       currentTaskId = 0;
+    //       isRunning = false;
+    //     }
+    //   },
+    getNewTaskId() {
+      //console.log('currentTaskId: ' + currentTaskId)
+      this.init();
+      return this.currentTaskId++;
+    };
+
+    timed(when, myFunc, myParam) {
+      if(when < 0) { throw new Error('"when" needs to be positive for timed'); }
+
+      let task = new Task(
+        this.getNewTaskId(),               //ID
+        1,                   //types aren't working right now? enum?
+        new Date().getTime(),         //start time
+        new Date().getTime() + when,  //end time
+        myFunc,                       //function
+        myParam);                     //parameter
+
+      this.tasks.push(task);
+
+      if(_debug) { console.log('added timed: ' + when); }
+
+      console.log('timed Id: ' + myId)
+      return task.id;
+    }
+
 }
 
 export let flojo = new FLOJO();
 
-//   //Private variables and methods
-
-//   tasks = [],
-
-//       currentTaskId = 0,
-
-//       //tracking
-//       isRunning = false,
-//       intervalID = null,
-//       _debug = false;
-
-//   init() {
-//     if(intervalID === null) {
-//       intervalID = requestAnimationFrame(update);
-//       isRunning = true;
-//     }
-//   },
-//   getNewWhen = (interval) => {
-//     return new Date().getTime() + interval;
-//   },
-//   findTime = () => {
-
-//     tasks.forEach(function(task, index) {
-
-//       if(task === null) { return; }
-
-//       if((task.when - new Date().getTime()) < 0)
-//       {
-//         task.func(task.param);
-
-//         switch(task.type)
-//         {
-//           case TYPE_TIMED:      //timed
-//             tasks[index] = null;
-//             break;
-
-//           case TYPE_COUNTED:    //count
-//             task.count--;
-//             if(task.count > 0) {
-//               task.when = getNewWhen(task.interval);
-//             } else {
-//               tasks[index] = null;
-//             }
-//             break;
-
-//           case TYPE_INFINITE:   //infinite
-//             task.when = getNewWhen(task.interval);
-//             break;
-
-//           default:
-//             break;
-
-//         }
-//       }
-//     });
-//   },
-//   cleanList = () => {
-//     var newArray = [];
-//     for(var q = 0; q < tasks.length; q++) {
-//       if(tasks[q] != null) { newArray.push(tasks[q]); }
-//     }
-//     tasks = newArray;
-//   },
-//   kill = (id) => {
-//     if(tasks.length === 0) { return false; }
-
-//     tasks.forEach(function(task, index) {
-//       if(task != null) {
-//         if(task.id === id)
-//         {
-//           tasks[index] = null;
-//           if(_debug) { console.log('task killed: ' + id); }
-//             return true;
-//         }
-//       }
-//     });
-
-//     cleanList();
-//   },
-//   getTaskFromId = (id) => {
-//     return tasks.find(function(t) {
-//       if(t != null) {
-//         return t.id === id;
-//       }
-//     });
-//   },
-//   update = () => {
-
-//     findTime();
-
-//     cleanList();
-
-//     if(tasks.length) {
-//       requestAnimationFrame(update);
-//     } else {
-//       intervalID = null;
-//       currentTaskId = 0;
-//       isRunning = false;
-//     }
-//   },
-//   getNewTaskId = function() {
-//     //console.log('currentTaskId: ' + currentTaskId)
-//     init();
-//     return currentTaskId++;
-//   };
 //   /// PUBLIC FUNCTIONS
 
 //   //Public

@@ -1,4 +1,4 @@
-class Task {
+export class Task {
   constructor(id, type, start, when, func, param) {
     this.id = id;
     this.type = type;

@@ -5,3 +5,6 @@ addTextToBody('Modules are pretty cool. ');
 
 console.log("hello from singleton! version:" + flojo.APP_VERSION);
 
+flojo.timed(1000, () => {
+  console.log('IT FREAKING WORKS')
+})
