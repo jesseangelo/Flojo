@@ -3,12 +3,11 @@
 
 // Singleton Module
 // https://stackoverflow.com/questions/32647215/declaring-static-constants-in-es6-classes
-import { Task } from './types.js';
+import { Task, Counted, Infinite,
+  TYPE_COUNTED, TYPE_TIMED, TYPE_INFINITE } from './types.js';
 
 export const APP_VERSION = 4.0;
-export const TYPE_TIMED = 1;
-export const TYPE_COUNTED = 2;
-export const TYPE_INFINITE = 3;
+
 
 export class FLOJO {
 
@@ -75,14 +74,14 @@ export class FLOJO {
 
         switch(task.type)
         {
-          case 1:      //timed
+          case TYPE_TIMED:      //timed
             console.log('fonud a timed')
             flojo.tasks[index] = null;
             //this.tasks[index] = null;
             //console.log(this.tasks[index]);
             break;
 
-          case 2:    //count
+          case TYPE_COUNTED:    //count
             task.count--;
             if(task.count > 0) {
               task.when = getNewWhen(task.interval);
@@ -91,7 +90,7 @@ export class FLOJO {
             }
             break;
 
-          case 3:   //infinite
+          case TYPE_INFINITE:   //infinite
             task.when = getNewWhen(task.interval);
             break;
 
@@ -110,6 +109,7 @@ export class FLOJO {
     }
     this.tasks = newArray;
   }
+
   kill(id) {
     if(this.tasks.length === 0) { return false; }
 
@@ -134,44 +134,31 @@ export class FLOJO {
       }
     });
   }
-    //   update = () => {
 
-    //     findTime();
+  getNewTaskId() {
+    //console.log('currentTaskId: ' + currentTaskId)
+    this.init();
+    return this.currentTaskId++;
+  };
 
-    //     cleanList();
+  timed(when, myFunc, myParam) {
+    if(when < 0) { throw new Error('"when" needs to be positive for timed'); }
 
-    //     if(tasks.length) {
-    //       requestAnimationFrame(update);
-    //     } else {
-    //       intervalID = null;
-    //       currentTaskId = 0;
-    //       isRunning = false;
-    //     }
-    //   },
-    getNewTaskId() {
-      //console.log('currentTaskId: ' + currentTaskId)
-      this.init();
-      return this.currentTaskId++;
-    };
+    let task = new Task(
+      this.getNewTaskId(),               //ID
+      TYPE_TIMED,                   //types aren't working right now? enum?
+      new Date().getTime(),         //start time
+      new Date().getTime() + when,  //end time
+      myFunc,                       //function
+      myParam);                     //parameter
 
-    timed(when, myFunc, myParam) {
-      if(when < 0) { throw new Error('"when" needs to be positive for timed'); }
+    this.tasks.push(task);
 
-      let task = new Task(
-        this.getNewTaskId(),               //ID
-        1,                   //types aren't working right now? enum?
-        new Date().getTime(),         //start time
-        new Date().getTime() + when,  //end time
-        myFunc,                       //function
-        myParam);                     //parameter
+    if(_debug) { console.log('added timed: ' + when); }
 
-      this.tasks.push(task);
-
-      if(_debug) { console.log('added timed: ' + when); }
-
-      console.log('timed Id: ' + myId)
-      return task.id;
-    }
+    console.log('timed Id: ' + myId)
+    return task.id;
+  }
 
 }
 

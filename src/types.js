@@ -1,3 +1,7 @@
+export const TYPE_TIMED = 1;
+export const TYPE_COUNTED = 2;
+export const TYPE_INFINITE = 3;
+
 export class Task {
   constructor(id, type, start, when, func, param) {
     this.id = id;
@@ -9,7 +13,7 @@ export class Task {
   }
 }
 
-class Counted extends Task {
+export class Counted extends Task {
   constructor(id, type, interval, start, when, count, func, param) {
     super(id, type, start, when, func, param);
     this.interval = interval;
@@ -17,7 +21,7 @@ class Counted extends Task {
   }
 }
 
-class Infinite extends Task {
+export class Infinite extends Task {
   constructor(id, type, interval, start, when, func, param) {
     super(id, type, start, when, func, param);
     this.interval = interval;
