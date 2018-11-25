@@ -13,31 +13,12 @@ export const APP_VERSION = 4.0;
 export class FLOJO {
 
   constructor() {
-
     this.core = new core();
-    console.log('flojo constructor ')
-    //private
-    //this.tasks = [];
-    this.currentTaskId = 0;
-
-      //tracking
-    this.isRunning = false;
-    this.intervalID = null;
     this._debug = false;
-    this.init();
   }
 
   static get APP_VERSION() {
     return APP_VERSION
-  }
-
-  init() {
-    if(this.intervalID === null) {
-      this.intervalID = window.requestAnimationFrame(() => {
-        this.core.update();
-      });
-      this.isRunning = true;
-    }
   }
 
   kill(id) {
@@ -67,8 +48,10 @@ export class FLOJO {
 
   getNewTaskId() {
     //console.log('currentTaskId: ' + currentTaskId)
-    this.init();
-    return this.currentTaskId++;
+    //call init in setter
+    this.core.init();
+    return this.core.currentTaskId++;
+    //return this.core.currentTaskId(1);
   }
 
   timed (when, myFunc, myParam) {

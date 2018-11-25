@@ -7,7 +7,26 @@ import {
 export class core {
   constructor() {
     this.tasks = [];
+    this.currentTaskId = 0;
+
+    //tracking
+  this.isRunning = false;
+  this.intervalID = null;
   }
+
+  init() {
+    if(this.intervalID === null) {
+      this.intervalID = window.requestAnimationFrame(() => {
+        this.update();
+      });
+      this.isRunning = true;
+    }
+  }
+
+  // set currentTaskId(x) {
+  //   this.init();
+  //   return this.currentTaskId++;
+  // }
 
   update() {
     this.findTime();
