@@ -9,7 +9,7 @@ export class core {
     this.tasks = [];
     this.currentTaskId = 0;
 
-    //tracking
+  //tracking
   this.isRunning = false;
   this.intervalID = null;
   }
@@ -21,6 +21,25 @@ export class core {
       });
       this.isRunning = true;
     }
+  }
+
+  add(task) {
+    this.tasks.push(task);
+  }
+
+  remove(taskId) {
+    if(this.tasks.length === 0) { return false; }
+
+    this.tasks.forEach((task, index) => {
+      if(task != null) {
+        if(task.id === taskId) {
+          this.tasks[index] = null;
+          this.cleanList();
+          if(this._debug) { console.log('task killed: ' + taskId); }
+          return true;
+        }
+      }
+    });
   }
 
   // set currentTaskId(x) {
@@ -48,6 +67,18 @@ export class core {
     return new Date().getTime() + interval;
   }
 
+  getNewTaskId() {
+    this.init();
+    return this.currentTaskId++;
+  }
+
+  getTaskFromId(id) {
+    return this.tasks.find(function(t) {
+      if(t != null) {
+        return t.id === id;
+      }
+    });
+  }
 
   findTime() {
     this.tasks.forEach((task, index) => {
@@ -93,7 +124,4 @@ export class core {
     }
     this.tasks = newArray;
   }
-
-
-
 }
