@@ -5,5 +5,5 @@ describe('Core tests', () => {
     let c = new core();
 
     expect(c).toBeTruthy();
-  })
+  });
 });

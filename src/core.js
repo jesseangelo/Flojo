@@ -1,21 +1,17 @@
-import {
-  TYPE_COUNTED,
-  TYPE_TIMED,
-  TYPE_INFINITE
-} from './types.js';
+import { TYPE_COUNTED, TYPE_TIMED, TYPE_INFINITE } from './types.js';
 
 export class core {
   constructor() {
     this.tasks = [];
     this.currentTaskId = 0;
 
-  //tracking
-  this.isRunning = false;
-  this.intervalID = null;
+    //tracking
+    this.isRunning = false;
+    this.intervalID = null;
   }
 
   init() {
-    if(this.intervalID === null) {
+    if (this.intervalID === null) {
       this.intervalID = window.requestAnimationFrame(() => {
         this.update();
       });
@@ -28,14 +24,18 @@ export class core {
   }
 
   remove(taskId) {
-    if(this.tasks.length === 0) { return false; }
+    if (this.tasks.length === 0) {
+      return false;
+    }
 
     this.tasks.forEach((task, index) => {
-      if(task != null) {
-        if(task.id === taskId) {
+      if (task != null) {
+        if (task.id === taskId) {
           this.tasks[index] = null;
           this.cleanList();
-          if(this._debug) { console.log('task killed: ' + taskId); }
+          if (this._debug) {
+            console.log('task killed: ' + taskId);
+          }
           return true;
         }
       }
@@ -51,9 +51,9 @@ export class core {
     this.findTime();
 
     this.cleanList();
-    if(this.tasks.length) {
+    if (this.tasks.length) {
       window.requestAnimationFrame(() => {
-        this.update()
+        this.update();
       });
     } else {
       this.intervalID = null;
@@ -74,7 +74,7 @@ export class core {
 
   getTaskFromId(id) {
     return this.tasks.find(function(t) {
-      if(t != null) {
+      if (t != null) {
         return t.id === id;
       }
     });
@@ -82,36 +82,34 @@ export class core {
 
   findTime() {
     this.tasks.forEach((task, index) => {
+      if (task === null) {
+        return;
+      }
 
-      if(task === null) { return; }
-
-      if((task.when - new Date().getTime()) < 0)
-      {
+      if (task.when - new Date().getTime() < 0) {
         task.func(task.param);
 
-        switch(task.type)
-        {
-          case TYPE_TIMED:      //timed
+        switch (task.type) {
+          case TYPE_TIMED: //timed
             this.tasks[index] = null;
             //console.log(this.core.tasks[index]);
             break;
 
-          case TYPE_COUNTED:    //count
+          case TYPE_COUNTED: //count
             task.count--;
-            if(task.count > 0) {
+            if (task.count > 0) {
               task.when = this.getNewWhen(task.interval);
             } else {
               this.tasks[index] = null;
             }
             break;
 
-          case TYPE_INFINITE:   //infinite
-            task.when = this.getNewWhen(task.interval)
+          case TYPE_INFINITE: //infinite
+            task.when = this.getNewWhen(task.interval);
             break;
 
           default:
             break;
-
         }
       }
     });
@@ -119,8 +117,10 @@ export class core {
 
   cleanList() {
     var newArray = [];
-    for(var q = 0; q < this.tasks.length; q++) {
-      if(this.tasks[q] != null) { newArray.push(this.tasks[q]); }
+    for (var q = 0; q < this.tasks.length; q++) {
+      if (this.tasks[q] != null) {
+        newArray.push(this.tasks[q]);
+      }
     }
     this.tasks = newArray;
   }

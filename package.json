@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "test": "jest src/",
-    "prettier": "prettier"
+    "prettier": "prettier --single-quote --write --trailing-comma=es5 \"./src/**/*.js\""
   },
   "jest": {
     "testRegex": "./src/.*\\.spec\\.(js)$",
