@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/jesseangelo/Flojo#readme",
   "dependencies": {
+    "babel-preset-es2015": "^6.24.1",
     "jest": "^23.6.0",
     "lodash": "^4.17.11",
     "prettier": "^1.15.3",
