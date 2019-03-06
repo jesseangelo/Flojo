@@ -28,12 +28,13 @@ export class FLOJO {
 
   timed (when, myFunc, myParam) {
     if(when < 0) { throw new Error('"when" needs to be positive for timed'); }
+    const ms = when * 1000;
 
     var task = new Task(
       this.core.getNewTaskId(),     //ID
       TYPE_TIMED,                   //type
       new Date().getTime(),         //start time
-      new Date().getTime() + when,  //end time
+      new Date().getTime() + ms,    //end time
       myFunc,                       //function
       myParam);                     //parameter
 
@@ -47,12 +48,13 @@ export class FLOJO {
   //what if the parent is another infinite
   after(id, when, myFunc, myParam) {
     if(when < 0) { throw new Error('"when" needs to be positive for after'); }
+    const ms = when * 1000;
 
     var myWhen;
     if(this.core.getTaskFromId(id) != null) {
-      myWhen = this.core.getTaskFromId(id).when + when;
+      myWhen = this.core.getTaskFromId(id).when + ms;
     } else {
-      myWhen = new Date().getTime() + when;
+      myWhen = new Date().getTime() + ms;
     }
 
     var task = new Task(
@@ -76,13 +78,14 @@ export class FLOJO {
   counted(when, count, myFunc, myParam) {
     if(when < 0) { throw new Error('"when" needs to be positive for counted'); }
     if(count < 0) { throw new Error('"count" needs to be positive'); }
+    const ms = when * 1000;
 
     var task = new Counted(
         this.core.getNewTaskId(),       //ID
         TYPE_COUNTED,                   //type
-        when,                           //when
+        ms,                             //when
         new Date().getTime(),           //start time
-        new Date().getTime() + when,    //end time
+        new Date().getTime() + ms,      //end time
         count,
         myFunc,                         //function
         myParam);                       //parameter
@@ -96,13 +99,14 @@ export class FLOJO {
 
   infinite(when, myFunc, myParam) {
     if(when < 0) { throw new Error('"when" needs to be positive for infinite'); }
+    const ms = when * 1000;
 
     var task = new Infinite(
         this.core.getNewTaskId(),       //ID
         TYPE_INFINITE,                  //type
-        when,                           //when
+        ms,                             //when
         new Date().getTime(),           //start time
-        new Date().getTime() + when,    //end time
+        new Date().getTime() + ms,    //end time
         myFunc,                         //function
         myParam);                       //parameter
 
