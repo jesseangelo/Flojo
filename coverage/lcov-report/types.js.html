@@ -20,9 +20,9 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">21.43% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>3/14</span>
+        <span class='fraction'>14/14</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
@@ -30,18 +30,18 @@
         <span class='fraction'>0/0</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>0/3</span>
+        <span class='fraction'>3/3</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">21.43% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>3/14</span>
+        <span class='fraction'>14/14</span>
       </div>
     </div>
   </div>
-  <div class='status-line low'></div>
+  <div class='status-line high'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet">1
 2
@@ -72,33 +72,33 @@
 27
 28
 29
-30</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+30</td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">export const TYPE_TIMED = 1;
@@ -106,28 +106,28 @@ export const TYPE_COUNTED = 2;
 export const TYPE_INFINITE = 3;
 &nbsp;
 export class Task {
-<span class="fstat-no" title="function not covered" >  co</span>nstructor(id, type, start, when, func, param) {
-<span class="cstat-no" title="statement not covered" >    this.id = id;</span>
-<span class="cstat-no" title="statement not covered" >    this.type = type;</span>
-<span class="cstat-no" title="statement not covered" >    this.start = start;</span>
-<span class="cstat-no" title="statement not covered" >    this.when = when;</span>
-<span class="cstat-no" title="statement not covered" >    this.func = func;</span>
-<span class="cstat-no" title="statement not covered" >    this.param = param;</span>
+  constructor(id, type, start, when, func, param) {
+    this.id = id;
+    this.type = type;
+    this.start = start;
+    this.when = when;
+    this.func = func;
+    this.param = param;
   }
 }
 &nbsp;
 export class Counted extends Task {
-<span class="fstat-no" title="function not covered" >  co</span>nstructor(id, type, interval, start, when, count, func, param) {
-<span class="cstat-no" title="statement not covered" >    super(id, type, start, when, func, param);</span>
-<span class="cstat-no" title="statement not covered" >    this.interval = interval;</span>
-<span class="cstat-no" title="statement not covered" >    this.count = count;</span>
+  constructor(id, type, interval, start, when, count, func, param) {
+    super(id, type, start, when, func, param);
+    this.interval = interval;
+    this.count = count;
   }
 }
 &nbsp;
 export class Infinite extends Task {
-<span class="fstat-no" title="function not covered" >  co</span>nstructor(id, type, interval, start, when, func, param) {
-<span class="cstat-no" title="statement not covered" >    super(id, type, start, when, func, param);</span>
-<span class="cstat-no" title="statement not covered" >    this.interval = interval;</span>
+  constructor(id, type, interval, start, when, func, param) {
+    super(id, type, start, when, func, param);
+    this.interval = interval;
   }
 }
 &nbsp;</pre></td></tr>
@@ -136,7 +136,7 @@ export class Infinite extends Task {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Wed Mar 06 2019 14:04:26 GMT-0500 (STD)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Wed Mar 06 2019 15:25:24 GMT-0500 (STD)
 </div>
 </div>
 <script src="prettify.js"></script>
