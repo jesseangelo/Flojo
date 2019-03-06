@@ -12,6 +12,7 @@ export const APP_VERSION = 4.0;
 
 export class FLOJO {
 
+  
   constructor() {
     this.core = new core();
     this._debug = false;
@@ -29,7 +30,7 @@ export class FLOJO {
     if(when < 0) { throw new Error('"when" needs to be positive for timed'); }
 
     var task = new Task(
-      this.core.getNewTaskId(),          //ID
+      this.core.getNewTaskId(),     //ID
       TYPE_TIMED,                   //type
       new Date().getTime(),         //start time
       new Date().getTime() + when,  //end time
@@ -77,7 +78,7 @@ export class FLOJO {
     if(count < 0) { throw new Error('"count" needs to be positive'); }
 
     var task = new Counted(
-        this.core.getNewTaskId(),                 //ID
+        this.core.getNewTaskId(),       //ID
         TYPE_COUNTED,                   //type
         when,                           //when
         new Date().getTime(),           //start time
@@ -97,7 +98,7 @@ export class FLOJO {
     if(when < 0) { throw new Error('"when" needs to be positive for infinite'); }
 
     var task = new Infinite(
-        this.core.getNewTaskId(),                 //ID
+        this.core.getNewTaskId(),       //ID
         TYPE_INFINITE,                  //type
         when,                           //when
         new Date().getTime(),           //start time

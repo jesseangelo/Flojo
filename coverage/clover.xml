@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1543864364937" clover="3.2.0">
-  <project timestamp="1543864364938" name="All files">
+<coverage generated="1551899067010" clover="3.2.0">
+  <project timestamp="1551899067010" name="All files">
     <metrics statements="68" coveredstatements="12" conditionals="26" coveredconditionals="1" methods="18" coveredmethods="4" elements="112" coveredelements="17" complexity="0" loc="68" ncloc="68" packages="1" files="2" classes="2">
-      <file name="core.js" path="/Users/admin/Development/Flojo/src/core.js">
+      <file name="core.js" path="/mnt/c/Users/Gamer/Development/Flojo/src/core.js">
         <metrics statements="54" coveredstatements="9" conditionals="26" coveredconditionals="1" methods="15" coveredmethods="4"/>
         <line num="5" count="3" type="stmt"/>
         <line num="6" count="3" type="stmt"/>
@@ -59,7 +59,7 @@
         <line num="122" count="0" type="stmt"/>
         <line num="125" count="0" type="stmt"/>
       </file>
-      <file name="types.js" path="/Users/admin/Development/Flojo/src/types.js">
+      <file name="types.js" path="/mnt/c/Users/Gamer/Development/Flojo/src/types.js">
         <metrics statements="14" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
